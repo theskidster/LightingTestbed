@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.dshade.graphics;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
