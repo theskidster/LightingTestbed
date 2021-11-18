@@ -1,5 +1,6 @@
 package dev.theskidster.dshade.scene;
 
+import dev.theskidster.dshade.entity.EntityCube;
 import dev.theskidster.dshade.entity.EntityPlane;
 import dev.theskidster.dshade.graphics.Color;
 import dev.theskidster.shadercore.GLProgram;
@@ -17,7 +18,8 @@ public class TestScene extends Scene {
     public TestScene() {
         super("test");
         
-        entities.put("plane", new EntityPlane(0, -2, 0, Color.WHITE, 10, 10));
+        entities.put("plane", new EntityPlane(0, -2, 0, Color.GRAY, 10, 10));
+        entities.put("cube", new EntityCube(0, 0, 0, 1, 1, 1));
     }
 
     @Override

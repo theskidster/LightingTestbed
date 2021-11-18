@@ -59,6 +59,7 @@ public class EntityPlane extends Entity {
     public void render(GLProgram sceneProgram) {
         glBindVertexArray(g.vao);
         
+        sceneProgram.setUniform("uType", 0);
         sceneProgram.setUniform("uColor", color.asVec3());
         sceneProgram.setUniform("uModel", false, g.modelMatrix);
         
