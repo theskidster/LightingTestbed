@@ -35,6 +35,7 @@ public final class App {
     private final GLProgram hudProgram;
     private final GLProgram sceneProgram;
     private final Font font;
+    private final Background background;
     private static Scene scene;
     
     App() {
@@ -76,9 +77,10 @@ public final class App {
             hudProgram = new GLProgram(shaderSourceFiles, "hud");
             hudProgram.use();
             
-            hudProgram.addUniform(BufferType.INT,  "uType");
-            hudProgram.addUniform(BufferType.VEC3, "uColor");
-            hudProgram.addUniform(BufferType.MAT4, "uProjection");
+            hudProgram.addUniform(BufferType.INT,   "uType");
+            hudProgram.addUniform(BufferType.FLOAT, "uOpacity");
+            hudProgram.addUniform(BufferType.VEC3,  "uColor");
+            hudProgram.addUniform(BufferType.MAT4,  "uProjection");
         }
         
         //Create the shader program for rendering objects within the 3D scene.
@@ -97,8 +99,9 @@ public final class App {
             sceneProgram.addUniform(BufferType.MAT4, "uProjection");
         }
         
-        camera = new Camera();
-        font   = new Font("fnt_debug_mono.ttf", 12);
+        camera     = new Camera();
+        font       = new Font("fnt_debug_mono.ttf", 12);
+        background = new Background(0, window.getHeight() - 130, 300, 130);
     }
     
     void start() {
@@ -157,6 +160,7 @@ public final class App {
                 font.projMatrix.setOrtho(0, window.getWidth(), 0, window.getHeight(), 0, Integer.MAX_VALUE);
                 hudProgram.setUniform("uProjection", false, font.projMatrix);
                 
+                background.render(hudProgram);
                 font.drawString("FPS: " + fps, 12, window.getHeight() - 20, Color.WHITE, hudProgram);
                 font.drawString("DELTA: " + (float) deltaMetric, 12, window.getHeight() - 40, Color.WHITE, hudProgram);
                 font.drawString("TICKED: " + ticked, 12, window.getHeight() - 60, Color.WHITE, hudProgram);
