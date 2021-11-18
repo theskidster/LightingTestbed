@@ -1,5 +1,6 @@
 package dev.theskidster.dshade.main;
 
+import dev.theskidster.dshade.scene.Scene;
 import dev.theskidster.jlogger.JLogger;
 import dev.theskidster.shadercore.ShaderCore;
 import static org.lwjgl.glfw.GLFW.*;
@@ -27,6 +28,7 @@ public final class App {
     
     private final Monitor monitor;
     private final Window window;
+    private static Scene scene;
     
     App() {
         if(!glfwInit()) {
@@ -128,6 +130,12 @@ public final class App {
     
     public static boolean tick(int cycles) {
         return tickCount % cycles == 0;
+    }
+    
+    public static void setScene(Scene newScene) {
+        if(scene != null) scene.exit();
+        scene = newScene;
+        JLogger.logInfo("Entered scene \"" + scene.name + "\"");
     }
     
 }
