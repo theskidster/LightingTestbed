@@ -1,8 +1,13 @@
 package dev.theskidster.dshade.main;
 
 import dev.theskidster.dshade.scene.Scene;
+import dev.theskidster.dshade.scene.TestScene;
 import dev.theskidster.jlogger.JLogger;
+import dev.theskidster.shadercore.BufferType;
+import dev.theskidster.shadercore.GLProgram;
+import dev.theskidster.shadercore.Shader;
 import dev.theskidster.shadercore.ShaderCore;
+import java.util.LinkedList;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.opengl.GL;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -11,6 +16,8 @@ import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 
 /**
  * Nov 17, 2021
@@ -28,6 +35,9 @@ public final class App {
     
     private final Monitor monitor;
     private final Window window;
+    private final Camera camera;
+    private final GLProgram hudProgram;
+    private final GLProgram sceneProgram;
     private static Scene scene;
     
     App() {
@@ -61,17 +71,40 @@ public final class App {
         
         //Create the shader program for the applications heads up display.
         {
+            var shaderSourceFiles = new LinkedList<Shader>() {{
+                add(new Shader("hudVertex.glsl", GL_VERTEX_SHADER));
+                add(new Shader("hudFragment.glsl", GL_FRAGMENT_SHADER));
+            }};
             
+            hudProgram = new GLProgram(shaderSourceFiles, "hud");
+            hudProgram.use();
+            
+            hudProgram.addUniform(BufferType.INT,  "uType");
+            hudProgram.addUniform(BufferType.VEC3, "uColor");
+            hudProgram.addUniform(BufferType.MAT4, "uProjection");
         }
         
         //Create the shader program for rendering objects within the 3D scene.
         {
+            var shaderSourceFiles = new LinkedList<Shader>() {{
+                add(new Shader("sceneVertex.glsl", GL_VERTEX_SHADER));
+                add(new Shader("sceneFragment.glsl", GL_FRAGMENT_SHADER));
+            }};
             
+            sceneProgram = new GLProgram(shaderSourceFiles, "scene");
+            sceneProgram.use();
+            
+            sceneProgram.addUniform(BufferType.MAT4, "uModel");
+            sceneProgram.addUniform(BufferType.MAT4, "uView");
+            sceneProgram.addUniform(BufferType.MAT4, "uProjection");
         }
+        
+        camera = new Camera();
     }
     
     void start() {
-        window.show(monitor);
+        scene = new TestScene();
+        window.show(monitor, camera);
         
         int cycles = 0;
         int fps = 0;
@@ -100,7 +133,7 @@ public final class App {
                 
                 glfwPollEvents();
                 
-                //scene.update();
+                scene.update();
                 
                 if(tick(60)) {
                     fps    = cycles;
@@ -111,7 +144,8 @@ public final class App {
             glViewport(0, 0, window.getWidth(), window.getHeight());
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            //TODO: render scene
+            camera.render(sceneProgram);
+            scene.render(sceneProgram);
             
             glfwSwapBuffers(Window.handle);
             
