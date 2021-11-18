@@ -1,4 +1,4 @@
-package dev.theskidster.defshade.main;
+package dev.theskidster.dshade.main;
 
 /**
  * Nov 17, 2021
@@ -11,7 +11,7 @@ package dev.theskidster.defshade.main;
 public class Main {
 
     public static void main(String args[]) {
-        System.out.println("asdf");
+        new App().start();
     }
     
 }
