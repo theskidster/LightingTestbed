@@ -11,8 +11,7 @@ out vec4 ioResult;
 void main() {
     switch(uType) {
         case 0:
-            vec4 sampled = vec4(1, 1, 1, texture(uTexture, ioTexCoords).r);
-            ioResult     = vec4(uColor, 1) * sampled;
+            ioResult = vec4(uColor, texture(uTexture, ioTexCoords).a);
             break;
     }
 }

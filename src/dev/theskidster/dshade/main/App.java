@@ -1,5 +1,6 @@
 package dev.theskidster.dshade.main;
 
+import dev.theskidster.dshade.graphics.Color;
 import dev.theskidster.dshade.scene.Scene;
 import dev.theskidster.dshade.scene.TestScene;
 import dev.theskidster.jlogger.JLogger;
@@ -26,11 +27,14 @@ public final class App {
     
     private static boolean vSync = true;
     
+    public static final String ASSETS_PATH = "/dev/theskidster/dshade/assets/";
+    
     private final Monitor monitor;
     private final Window window;
     private final Camera camera;
     private final GLProgram hudProgram;
     private final GLProgram sceneProgram;
+    private final Font font;
     private static Scene scene;
     
     App() {
@@ -94,6 +98,7 @@ public final class App {
         }
         
         camera = new Camera();
+        font   = new Font("fnt_debug_mono.ttf", 12);
     }
     
     void start() {
@@ -149,6 +154,15 @@ public final class App {
             //Render HUD.
             {
                 hudProgram.use();
+                font.projMatrix.setOrtho(0, window.getWidth(), 0, window.getHeight(), 0, Integer.MAX_VALUE);
+                hudProgram.setUniform("uProjection", false, font.projMatrix);
+                
+                font.drawString("FPS: " + fps, 12, window.getHeight() - 20, Color.WHITE, hudProgram);
+                font.drawString("DELTA: " + (float) deltaMetric, 12, window.getHeight() - 40, Color.WHITE, hudProgram);
+                font.drawString("TICKED: " + ticked, 12, window.getHeight() - 60, Color.WHITE, hudProgram);
+                font.drawString("VSYNC: " + vSync, 12, window.getHeight() - 80, Color.YELLOW, hudProgram);
+                font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
+                font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
             }
             
             glfwSwapBuffers(Window.handle);
