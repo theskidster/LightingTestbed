@@ -91,4 +91,12 @@ public final class Window {
         return height;
     }
     
+    public static float getMouseX() {
+        return mousePosX;
+    }
+    
+    public static float getMouseY() {
+        return mousePosY;
+    }
+    
 }

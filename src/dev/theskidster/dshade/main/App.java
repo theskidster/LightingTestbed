@@ -103,6 +103,8 @@ public final class App {
         camera     = new Camera();
         font       = new Font("fnt_debug_mono.ttf", 12);
         background = new Background(0, window.getHeight() - 130, 300, 130);
+        
+        Scene.setCameraReference(camera);
     }
     
     void start() {
