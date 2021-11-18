@@ -21,7 +21,7 @@ public class TestScene extends Scene {
         setCameraPosition(6, 4, 10);
         setCameraDirection(-120, 20);
         
-        entities.put("plane", new EntityPlane(0, -2, 0, Color.GRAY, 10, 10));
+        entities.put("plane", new EntityPlane(0, -2, 0, Color.GRAY, 25, 25));
         entities.put("cube", new EntityCube(0, 0, 0, 1, 1, 1));
     }
 

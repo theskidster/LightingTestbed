@@ -31,7 +31,7 @@ public final class Camera {
     private final Matrix4f proj = new Matrix4f();
     
     void updateViewport(int width, int height) {
-        proj.setPerspective((float) Math.toRadians(60f), (float) width / height, 0.1f, Float.POSITIVE_INFINITY);
+        proj.setPerspective((float) Math.toRadians(45f), (float) width / height, 0.1f, Float.POSITIVE_INFINITY);
     }
     
     void render(GLProgram sceneProgram) {
@@ -66,8 +66,8 @@ public final class Camera {
     
     void setDirection(double xPos, double yPos) {
         if(xPos != prevX || yPos != prevY) {
-            yaw   += getChangeIntensity(xPos, prevX, 0.35f);
-            pitch += getChangeIntensity(yPos, prevY, 0.35f);
+            yaw   += getChangeIntensity(xPos, prevX, 0.22f);
+            pitch += getChangeIntensity(yPos, prevY, 0.22f);
             
             if(pitch > 89f)  pitch = 89f;
             if(pitch < -89f) pitch = -89f;
