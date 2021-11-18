@@ -10,14 +10,7 @@ import dev.theskidster.shadercore.ShaderCore;
 import java.util.LinkedList;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.opengl.GL;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glGetString;
-import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.*;
 
 /**
  * Nov 17, 2021
@@ -94,6 +87,7 @@ public final class App {
             sceneProgram = new GLProgram(shaderSourceFiles, "scene");
             sceneProgram.use();
             
+            sceneProgram.addUniform(BufferType.VEC3, "uColor");
             sceneProgram.addUniform(BufferType.MAT4, "uModel");
             sceneProgram.addUniform(BufferType.MAT4, "uView");
             sceneProgram.addUniform(BufferType.MAT4, "uProjection");
@@ -144,8 +138,18 @@ public final class App {
             glViewport(0, 0, window.getWidth(), window.getHeight());
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            camera.render(sceneProgram);
-            scene.render(sceneProgram);
+            //Render Scene.
+            {
+                sceneProgram.use();
+                
+                camera.render(sceneProgram);
+                scene.render(sceneProgram);
+            }
+            
+            //Render HUD.
+            {
+                hudProgram.use();
+            }
             
             glfwSwapBuffers(Window.handle);
             
@@ -170,6 +174,25 @@ public final class App {
         if(scene != null) scene.exit();
         scene = newScene;
         JLogger.logInfo("Entered scene \"" + scene.name + "\"");
+    }
+    
+    public static void checkGLError() {
+        int glError = glGetError();
+        
+        if(glError != GL_NO_ERROR) {
+            String desc = "";
+            
+            switch(glError) {
+                case GL_INVALID_ENUM      -> desc = "invalid enum";
+                case GL_INVALID_VALUE     -> desc = "invalid value";
+                case GL_INVALID_OPERATION -> desc = "invalid operation";
+                case GL_STACK_OVERFLOW    -> desc = "stack overflow";
+                case GL_STACK_UNDERFLOW   -> desc = "stack underflow";
+                case GL_OUT_OF_MEMORY     -> desc = "out of memory";
+            }
+            
+            JLogger.logSevere("OpenGL Error: (" + glError + ") " + desc, null);
+        }
     }
     
 }

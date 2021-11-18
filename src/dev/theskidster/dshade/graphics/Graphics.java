@@ -15,14 +15,14 @@ import static org.lwjgl.opengl.GL30.*;
  */
 public class Graphics {
 
-    protected final int vao;
-    private final int vbo;
-    private final int ibo;
+    public final int vao;
+    public final int vbo;
+    public final int ibo;
     
-    protected FloatBuffer vertices;
-    protected IntBuffer indices;
+    public FloatBuffer vertices;
+    public IntBuffer indices;
     
-    protected Matrix4f modelMatrix;
+    public Matrix4f modelMatrix;
     
     public Graphics() {
         vao = glGenVertexArrays();
@@ -31,7 +31,7 @@ public class Graphics {
         modelMatrix = new Matrix4f();
     }
     
-    protected final void bindBuffers() {
+    public final void bindBuffers() {
         glBindVertexArray(vao);
         
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -43,7 +43,7 @@ public class Graphics {
         }
     }
     
-    protected void freeBuffers() {
+    public void freeBuffers() {
         glDeleteVertexArrays(vao);
         glDeleteBuffers(vbo);
         glDeleteBuffers(ibo);
