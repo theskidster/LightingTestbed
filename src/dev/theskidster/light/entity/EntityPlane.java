@@ -27,14 +27,14 @@ public class EntityPlane extends Entity {
         g = new Graphics();
         
         try(MemoryStack stack = MemoryStack.stackPush()) {
-            g.vertices = stack.mallocFloat(12);
+            g.vertices = stack.mallocFloat(24);
             g.indices  = stack.mallocInt(6);
             
-            //(vec position)
-            g.vertices.put(-width).put(0).put(-depth);
-            g.vertices.put(-width).put(0) .put(depth);
-            g.vertices .put(width).put(0) .put(depth);
-            g.vertices. put(width).put(0).put(-depth);
+            //(vec position), (vec2 normal)
+            g.vertices.put(-width).put(0).put(-depth)   .put(0).put(1).put(0);
+            g.vertices.put(-width).put(0) .put(depth)   .put(0).put(1).put(0);
+            g.vertices .put(width).put(0) .put(depth)   .put(0).put(1).put(0);
+            g.vertices. put(width).put(0).put(-depth)   .put(0).put(1).put(0);
             
             g.indices.put(0).put(1).put(2);
             g.indices.put(2).put(3).put(0);
@@ -45,9 +45,11 @@ public class EntityPlane extends Entity {
         
         g.bindBuffers();
         
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, (3 * Float.BYTES), 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, (6 * Float.BYTES), 0);
+        glVertexAttribPointer(3, 3, GL_FLOAT, false, (6 * Float.BYTES), (3 * Float.BYTES));
         
         glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(3);
     }
 
     @Override
