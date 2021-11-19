@@ -1,8 +1,8 @@
-package dev.theskidster.dshade.scene;
+package dev.theskidster.light.scene;
 
-import dev.theskidster.dshade.entity.Entity;
-import dev.theskidster.dshade.main.Camera;
-import dev.theskidster.dshade.main.Window;
+import dev.theskidster.light.entity.Entity;
+import dev.theskidster.light.main.Camera;
+import dev.theskidster.light.main.Window;
 import dev.theskidster.shadercore.GLProgram;
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
 /**
  * Nov 17, 2021

@@ -1,6 +1,6 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
-import dev.theskidster.dshade.graphics.Color;
+import dev.theskidster.light.graphics.Color;
 import dev.theskidster.jlogger.JLogger;
 import dev.theskidster.shadercore.GLProgram;
 import java.io.InputStream;

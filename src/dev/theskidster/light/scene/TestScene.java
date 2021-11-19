@@ -1,8 +1,8 @@
-package dev.theskidster.dshade.scene;
+package dev.theskidster.light.scene;
 
-import dev.theskidster.dshade.entity.EntityCube;
-import dev.theskidster.dshade.entity.EntityPlane;
-import dev.theskidster.dshade.graphics.Color;
+import dev.theskidster.light.entity.EntityCube;
+import dev.theskidster.light.entity.EntityPlane;
+import dev.theskidster.light.graphics.Color;
 import dev.theskidster.shadercore.GLProgram;
 
 /**

@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.entity;
+package dev.theskidster.light.entity;
 
 import dev.theskidster.shadercore.GLProgram;
 import org.joml.Vector3f;

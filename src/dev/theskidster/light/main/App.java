@@ -1,8 +1,8 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
-import dev.theskidster.dshade.graphics.Color;
-import dev.theskidster.dshade.scene.Scene;
-import dev.theskidster.dshade.scene.TestScene;
+import dev.theskidster.light.graphics.Color;
+import dev.theskidster.light.scene.Scene;
+import dev.theskidster.light.scene.TestScene;
 import dev.theskidster.jlogger.JLogger;
 import dev.theskidster.shadercore.BufferType;
 import dev.theskidster.shadercore.GLProgram;
@@ -27,7 +27,7 @@ public final class App {
     
     private static boolean vSync = true;
     
-    public static final String ASSETS_PATH = "/dev/theskidster/dshade/assets/";
+    public static final String ASSETS_PATH = "/dev/theskidster/light/assets/";
     
     private final Monitor monitor;
     private final Window window;
@@ -65,7 +65,7 @@ public final class App {
         JLogger.newHorizontalLine();
         JLogger.newLine();
         
-        ShaderCore.setFilepath("/dev/theskidster/dshade/shaders/");
+        ShaderCore.setFilepath("/dev/theskidster/light/shaders/");
         
         //Create the shader program for the applications heads up display.
         {

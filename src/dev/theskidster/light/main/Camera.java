@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
 import dev.theskidster.shadercore.GLProgram;
 import org.joml.Matrix4f;

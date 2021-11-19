@@ -1,7 +1,7 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
-import static dev.theskidster.dshade.graphics.Color.BLACK;
-import dev.theskidster.dshade.graphics.Graphics;
+import static dev.theskidster.light.graphics.Color.BLACK;
+import dev.theskidster.light.graphics.Graphics;
 import dev.theskidster.shadercore.GLProgram;
 import static org.lwjgl.opengl.GL11C.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11C.GL_SRC_ALPHA;

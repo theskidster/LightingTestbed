@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
 import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;

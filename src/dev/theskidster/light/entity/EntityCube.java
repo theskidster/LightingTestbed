@@ -1,8 +1,8 @@
-package dev.theskidster.dshade.entity;
+package dev.theskidster.light.entity;
 
-import static dev.theskidster.dshade.graphics.Color.WHITE;
-import dev.theskidster.dshade.graphics.Graphics;
-import dev.theskidster.dshade.main.App;
+import static dev.theskidster.light.graphics.Color.WHITE;
+import dev.theskidster.light.graphics.Graphics;
+import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;

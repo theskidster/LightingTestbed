@@ -1,8 +1,8 @@
-package dev.theskidster.dshade.entity;
+package dev.theskidster.light.entity;
 
-import dev.theskidster.dshade.graphics.Color;
-import dev.theskidster.dshade.graphics.Graphics;
-import dev.theskidster.dshade.main.App;
+import dev.theskidster.light.graphics.Color;
+import dev.theskidster.light.graphics.Graphics;
+import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.system.MemoryStack;

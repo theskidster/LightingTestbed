@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.main;
+package dev.theskidster.light.main;
 
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;

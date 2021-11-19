@@ -1,4 +1,4 @@
-package dev.theskidster.dshade.graphics;
+package dev.theskidster.light.graphics;
 
 import org.joml.Vector3f;
 
