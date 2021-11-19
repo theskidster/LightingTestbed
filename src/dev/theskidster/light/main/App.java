@@ -155,7 +155,7 @@ public final class App {
                 sceneProgram.use();
                 
                 camera.render(sceneProgram);
-                scene.render(sceneProgram);
+                scene.render(sceneProgram, camera);
             }
             
             //Render HUD.

@@ -28,7 +28,7 @@ public abstract class Scene {
     
     public abstract void update();
     
-    public abstract void render(GLProgram sceneProgram);    
+    public abstract void render(GLProgram sceneProgram, Camera camera);    
 
     public abstract void exit();
     

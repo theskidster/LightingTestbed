@@ -108,4 +108,16 @@ public final class Camera {
         prevY = yPos;
     }
     
+    public Vector3f getPosition() {
+        return position;
+    }
+    
+    public Vector3f getDirection() {
+        return direction;
+    }
+    
+    public Vector3f getUp() {
+        return up;
+    }
+    
 }

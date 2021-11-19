@@ -21,7 +21,7 @@ void main() {
             break;
         
         case 2: //Used to render light source icons.
-            ioResult = texture(uTexture, ioTexCoords) * vec4(ioColor, 1);
+            ioResult = texture(uTexture, ioTexCoords) * vec4(ioColor, texture(uTexture, ioTexCoords).a);
             break;
     }
 }
