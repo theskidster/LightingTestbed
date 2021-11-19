@@ -52,7 +52,7 @@ public final class App {
         }
         
         monitor = new Monitor();
-        window  = new Window("Deferred Shading", monitor);
+        window  = new Window("Lighting Testbed", monitor);
         
         glfwMakeContextCurrent(Window.handle);
         GL.createCapabilities();
