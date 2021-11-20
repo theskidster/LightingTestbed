@@ -185,6 +185,30 @@ public class Model {
         }
     }
     
+    public void delocalizeNormal() {
+        meshes.forEach(mesh -> normal.set(mesh.modelMatrix.invert()));
+    }
+    
+    public void translation(float x, float y, float z) {
+        meshes.forEach(mesh -> mesh.modelMatrix.translation(x, y, z));
+    }
+    
+    public void rotateX(float angle) {
+        meshes.forEach(mesh -> mesh.modelMatrix.rotateX((float) Math.toRadians(angle)));
+    }
+    
+    public void rotateY(float angle) {
+        meshes.forEach(mesh -> mesh.modelMatrix.rotateY((float) Math.toRadians(angle)));
+    }
+    
+    public void rotateZ(float angle) {
+        meshes.forEach(mesh -> mesh.modelMatrix.rotateZ((float) Math.toRadians(angle)));
+    }
+    
+    public void scale(float factor) {
+        meshes.forEach(mesh -> mesh.modelMatrix.scale(factor));
+    }
+    
     public void render(GLProgram sceneProgram) {
         meshes.forEach(mesh -> {
             

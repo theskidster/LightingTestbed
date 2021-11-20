@@ -63,5 +63,15 @@ void main() {
         case 2: //Used to render light source icons.
             ioResult = texture(uTexture, ioTexCoords) * vec4(ioColor, texture(uTexture, ioTexCoords).a);
             break;
+        
+        case 3: //Used to render 3D models.
+            vec3 lighting2 = calcWorldLight(uLights[0], normalize(ioNormal));
+            
+            for(int i = 1; i < uNumLights; i++) {
+                lighting2 += calcPointLight(uLights[i], normalize(ioNormal), ioFragPos);
+            }
+            
+            ioResult = texture(uTexture, ioTexCoords) * vec4(lighting2 * ioColor, 1);
+            break;
     }
 }

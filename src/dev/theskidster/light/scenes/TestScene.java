@@ -47,6 +47,8 @@ public class TestScene extends Scene {
     @Override
     public void render(GLProgram sceneProgram, Camera camera) {
         entities.values().forEach(entity -> entity.render(sceneProgram));
+        
+        model.render(sceneProgram);
     }
 
     @Override

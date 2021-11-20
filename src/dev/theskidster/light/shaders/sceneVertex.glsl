@@ -31,5 +31,8 @@ void main() {
             ioColor     = uColor;
             gl_Position = uProjection * uView * uModel * vec4(aPosition, 1);
             break;
+        
+        case 3: //Used to render 3D models.
+            break;
     }
 }
