@@ -33,10 +33,9 @@ public class TestScene extends Scene {
         model = new Model("mod_teapot.fbx");
         
         //addLight(new Light(0.5f, 1f, new Vector3f(2, 0, 0), Color.LIME, Color.LIME));
-        
         //addLightAtIndex(0, Light.midnight());
     }
-
+    
     @Override
     public void update() {
         cube.angleY += 1f;
