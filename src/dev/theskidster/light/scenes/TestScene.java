@@ -4,11 +4,9 @@ import dev.theskidster.light.entity.EntityCube;
 import dev.theskidster.light.entity.EntityPlane;
 import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.main.Camera;
-import dev.theskidster.light.graphics.Light;
-import dev.theskidster.light.scene.LightSource;
+import dev.theskidster.light.graphics.Model;
 import dev.theskidster.light.scene.Scene;
 import dev.theskidster.shadercore.GLProgram;
-import org.joml.Vector3f;
 
 /**
  * Nov 17, 2021
@@ -21,6 +19,7 @@ import org.joml.Vector3f;
 public class TestScene extends Scene {
     
     private EntityCube cube = new EntityCube(0, 0, 0, 1, 1, 1);
+    private Model model;
     
     public TestScene() {
         super("test");
@@ -28,10 +27,12 @@ public class TestScene extends Scene {
         setCameraPosition(6, 4, 10);
         setCameraDirection(-120, 20);
         
-        entities.put("plane", new EntityPlane(0, -2, 0, Color.create(10, 10, 10), 50, 50));
+        entities.put("plane", new EntityPlane(0, -2, 0, Color.GRAY, 50, 50));
         entities.put("cube", cube);
         
-        addLight(new Light(0.5f, 1f, new Vector3f(2, 0, 0), Color.YELLOW, Color.YELLOW));
+        model = new Model("mod_teapot.fbx");
+        
+        //addLight(new Light(0.5f, 1f, new Vector3f(2, 0, 0), Color.LIME, Color.LIME));
         
         //addLightAtIndex(0, Light.midnight());
     }
