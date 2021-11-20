@@ -1,12 +1,14 @@
-package dev.theskidster.light.scene;
+package dev.theskidster.light.scenes;
 
 import dev.theskidster.light.entity.EntityCube;
 import dev.theskidster.light.entity.EntityPlane;
 import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.main.Camera;
-import dev.theskidster.light.tech.Light;
-import dev.theskidster.light.tech.LightSource;
+import dev.theskidster.light.graphics.Light;
+import dev.theskidster.light.scene.LightSource;
+import dev.theskidster.light.scene.Scene;
 import dev.theskidster.shadercore.GLProgram;
+import org.joml.Vector3f;
 
 /**
  * Nov 17, 2021
@@ -17,8 +19,8 @@ import dev.theskidster.shadercore.GLProgram;
  * @since  
  */
 public class TestScene extends Scene {
-
-    private LightSource lightSource;
+    
+    private EntityCube cube = new EntityCube(0, 0, 0, 1, 1, 1);
     
     public TestScene() {
         super("test");
@@ -27,23 +29,21 @@ public class TestScene extends Scene {
         setCameraDirection(-120, 20);
         
         entities.put("plane", new EntityPlane(0, -2, 0, Color.GRAY, 25, 25));
-        entities.put("cube", new EntityCube(0, 0, 0, 1, 1, 1));
+        entities.put("cube", cube);
         
-        lightSource = new LightSource(true, Light.daylight());
+        addLight(new Light(0.5f, 0.5f, new Vector3f(2, 0, 0), Color.RED, Color.RED));
     }
 
     @Override
     public void update() {
-        entities.values().forEach(entity -> entity.update());
+        cube.angleY += 1f;
         
-        lightSource.update();
+        entities.values().forEach(entity -> entity.update());
     }
 
     @Override
     public void render(GLProgram sceneProgram, Camera camera) {
         entities.values().forEach(entity -> entity.render(sceneProgram));
-        
-        lightSource.render(sceneProgram, camera.getPosition(), camera.getDirection(), camera.getUp());
     }
 
     @Override

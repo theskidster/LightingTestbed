@@ -2,12 +2,20 @@ package dev.theskidster.light.entity;
 
 import static dev.theskidster.light.graphics.Color.WHITE;
 import dev.theskidster.light.graphics.Graphics;
+import dev.theskidster.light.graphics.Texture;
 import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
+import org.joml.Matrix3f;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -28,6 +36,7 @@ public class EntityCube extends Entity {
     public float angleZ;
     
     private Graphics g;
+    private Matrix3f normal = new Matrix3f();
     
     public EntityCube(float x, float y, float z, float width, float height, float depth) {
         super(x, y, z);
@@ -101,21 +110,28 @@ public class EntityCube extends Entity {
 
     @Override
     public void update() {
+        normal.set(g.modelMatrix.invert());
+        
         g.modelMatrix.translation(position);
-        g.modelMatrix.rotationX((float) Math.toRadians(angleX));
-        g.modelMatrix.rotationY((float) Math.toRadians(angleY));
-        g.modelMatrix.rotationZ((float) Math.toRadians(angleZ));
+        g.modelMatrix.rotateX((float) Math.toRadians(angleX));
+        g.modelMatrix.rotateY((float) Math.toRadians(angleY));
+        g.modelMatrix.rotateZ((float) Math.toRadians(angleZ));
     }
-
+    
     @Override
     public void render(GLProgram sceneProgram) {
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
         glBindVertexArray(g.vao);
         
         sceneProgram.setUniform("uType", 1);
         sceneProgram.setUniform("uColor", WHITE.asVec3());
         sceneProgram.setUniform("uModel", false, g.modelMatrix);
+        sceneProgram.setUniform("uNormal", true, normal);
         
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
         
         App.checkGLError();
     }

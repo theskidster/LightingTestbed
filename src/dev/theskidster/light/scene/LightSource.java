@@ -1,5 +1,6 @@
-package dev.theskidster.light.tech;
+package dev.theskidster.light.scene;
 
+import dev.theskidster.light.graphics.Light;
 import dev.theskidster.light.graphics.Graphics;
 import dev.theskidster.light.graphics.Texture;
 import dev.theskidster.light.main.App;
@@ -19,7 +20,7 @@ import org.lwjgl.system.MemoryStack;
  */
 public final class LightSource {
 
-    private final boolean isWorldLight;
+    final boolean isWorldLight;
     
     private final Light light;
     private final Graphics g;
@@ -37,7 +38,7 @@ public final class LightSource {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
     
-    public LightSource(boolean isWorldLight, Light light) {
+    LightSource(boolean isWorldLight, Light light) {
         this.isWorldLight = isWorldLight;
         this.light        = light;
         
@@ -70,11 +71,11 @@ public final class LightSource {
         glEnableVertexAttribArray(2);
     }
     
-    public void update() {
+    void update() {
         g.modelMatrix.translation(light.position);
     }
     
-    public void render(GLProgram sceneProgram, Vector3f camPos, Vector3f camDir, Vector3f camUp) {
+    void render(GLProgram sceneProgram, Vector3f camPos, Vector3f camDir, Vector3f camUp) {
         g.modelMatrix.billboardSpherical(light.position, camPos, camUp);
         g.modelMatrix.scale(camPos.distance(light.position) / 10);
         
@@ -95,6 +96,38 @@ public final class LightSource {
         glDisable(GL_BLEND);
         
         App.checkGLError();
+    }
+    
+    LightSource(boolean isWorldLight, Light light, LightSource source) {
+        this.isWorldLight = isWorldLight;
+        this.light        = light;
+        g           = source.g;
+        texCoords   = source.texCoords;
+        texCoords.set((isWorldLight) ? 0 : 0.5f, 0);
+    }
+    
+    public boolean getEnabled() {
+        return light.enabled;
+    }
+    
+    public float getBrightness() {
+        return light.brightness;
+    }
+    
+    public float getContrast() {
+        return light.contrast;
+    }
+    
+    public Vector3f getPosition() {
+        return light.position;
+    }
+    
+    public Vector3f getAmbientColor() {
+        return light.ambientColor.asVec3();
+    }
+    
+    public Vector3f getDiffuseColor() {
+        return light.diffuseColor.asVec3();
     }
     
 }

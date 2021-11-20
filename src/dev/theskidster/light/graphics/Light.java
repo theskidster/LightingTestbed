@@ -1,4 +1,4 @@
-package dev.theskidster.light.tech;
+package dev.theskidster.light.graphics;
 
 import dev.theskidster.light.graphics.Color;
 import org.joml.Vector3f;

@@ -2,13 +2,14 @@ package dev.theskidster.light.main;
 
 import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.scene.Scene;
-import dev.theskidster.light.scene.TestScene;
+import dev.theskidster.light.scenes.TestScene;
 import dev.theskidster.jlogger.JLogger;
 import dev.theskidster.shadercore.BufferType;
 import dev.theskidster.shadercore.GLProgram;
 import dev.theskidster.shadercore.Shader;
 import dev.theskidster.shadercore.ShaderCore;
 import java.util.LinkedList;
+import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.opengl.GL;
 import static org.lwjgl.opengl.GL20.*;
@@ -29,6 +30,8 @@ public final class App {
     
     public static final String ASSETS_PATH = "/dev/theskidster/light/assets/";
     
+    private final Vector3f noValue = new Vector3f();
+    
     private final Monitor monitor;
     private final Window window;
     private final Camera camera;
@@ -37,6 +40,15 @@ public final class App {
     private final Font font;
     private final Background background;
     private static Scene scene;
+    
+    /*
+    TODO:
+    Add the follwing features to XJGE:
+    
+    - 
+    - 
+    
+    */
     
     App() {
         if(!glfwInit()) {
@@ -94,11 +106,21 @@ public final class App {
             sceneProgram.use();
             
             sceneProgram.addUniform(BufferType.INT,  "uType");
+            sceneProgram.addUniform(BufferType.INT,  "uNumLights");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
             sceneProgram.addUniform(BufferType.VEC3, "uColor");
+            sceneProgram.addUniform(BufferType.MAT3, "uNormal");
             sceneProgram.addUniform(BufferType.MAT4, "uModel");
             sceneProgram.addUniform(BufferType.MAT4, "uView");
             sceneProgram.addUniform(BufferType.MAT4, "uProjection");
+            
+            for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
+                sceneProgram.addUniform(BufferType.FLOAT, "uLights[" + i + "].brightness");
+                sceneProgram.addUniform(BufferType.FLOAT, "uLights[" + i + "].contrast");
+                sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].position");
+                sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].ambient");
+                sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].diffuse");
+            }
         }
         
         camera     = new Camera();
@@ -140,6 +162,7 @@ public final class App {
                 glfwPollEvents();
                 
                 scene.update();
+                scene.updateLightSources();
                 
                 if(tick(60)) {
                     fps    = cycles;
@@ -154,8 +177,28 @@ public final class App {
             {
                 sceneProgram.use();
                 
+                for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
+                    if(scene.getLightSources()[i] != null) {
+                        if(scene.getLightSources()[i].getEnabled()) {
+                            sceneProgram.setUniform("uLights[" + i + "].brightness", scene.getLightSources()[i].getBrightness());
+                            sceneProgram.setUniform("uLights[" + i + "].contrast",   scene.getLightSources()[i].getContrast());
+                            sceneProgram.setUniform("uLights[" + i + "].position",   scene.getLightSources()[i].getPosition());
+                            sceneProgram.setUniform("uLights[" + i + "].ambient",    scene.getLightSources()[i].getAmbientColor());
+                            sceneProgram.setUniform("uLights[" + i + "].diffuse",    scene.getLightSources()[i].getDiffuseColor());
+                        } else {
+                            sceneProgram.setUniform("uLights[" + i + "].brightness", 0);
+                            sceneProgram.setUniform("uLights[" + i + "].contrast",   0);
+                            sceneProgram.setUniform("uLights[" + i + "].position",   noValue);
+                            sceneProgram.setUniform("uLights[" + i + "].ambient",    noValue);
+                            sceneProgram.setUniform("uLights[" + i + "].diffuse",    noValue);
+                        }
+                    }
+                }
+                sceneProgram.setUniform("uNumLights", scene.getNumLights());
+                
                 camera.render(sceneProgram);
                 scene.render(sceneProgram, camera);
+                scene.renderLightSources(sceneProgram, camera);
             }
             
             //Render HUD.

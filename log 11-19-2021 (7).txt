@@ -1,0 +1,19 @@
+--------------------------------------------------------------------------------
+INFO: OS NAME:		Windows 10
+INFO: JAVA VERSION:	15.0.2
+INFO: GLFW VERSION:	3.4.0 Win32 WGL Null EGL OSMesa VisualC DLL
+INFO: OPENGL VERSION:	4.5.0 - Build 23.20.16.4973
+--------------------------------------------------------------------------------
+
+INFO (shadercore): Shader program: "hud" linked successfully.
+INFO (shadercore): Shader program: "scene" linked successfully.
+
+11-19-2021 9:02PM
+ERROR: OpenGL Error: (1282) invalid operation
+
+java.lang.RuntimeException
+	dev.theskidster.jlogger.JLogger.logSevere(JLogger.java:161)
+	dev.theskidster.light.main.App.checkGLError(App.java:260)
+	dev.theskidster.light.main.App.start(App.java:198)
+	dev.theskidster.light.main.Main.main(Main.java:14)
+
