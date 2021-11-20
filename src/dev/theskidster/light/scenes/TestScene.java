@@ -42,6 +42,14 @@ public class TestScene extends Scene {
         cube.angleY += 1f;
         
         entities.values().forEach(entity -> entity.update());
+        
+        model.delocalizeNormal();
+        model.meshes.forEach(mesh -> {
+            mesh.modelMatrix.translation(10, 0, 0);
+            mesh.modelMatrix.rotateX((float) Math.toRadians(-135));
+            mesh.modelMatrix.rotateY((float) Math.toRadians(90));
+            mesh.modelMatrix.scale(0.15f);
+        });
     }
 
     @Override

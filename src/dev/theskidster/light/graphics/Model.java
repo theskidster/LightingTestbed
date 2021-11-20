@@ -29,15 +29,23 @@ import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.Assimp;
 import static org.lwjgl.assimp.Assimp.*;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL14.GL_MIRRORED_REPEAT;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -210,9 +218,23 @@ public class Model {
     }
     
     public void render(GLProgram sceneProgram) {
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        
         meshes.forEach(mesh -> {
+            glBindTexture(GL_TEXTURE_2D, textures[mesh.textureID].handle);
+            glBindVertexArray(mesh.vao);
             
+            sceneProgram.setUniform("uType", 3);
+            sceneProgram.setUniform("uModel", false, mesh.modelMatrix);
+            sceneProgram.setUniform("uNormal", true, normal);
+            sceneProgram.setUniform("uColor", color.asVec3());
+            
+            glDrawElements(GL_TRIANGLES, mesh.indices.capacity(), GL_UNSIGNED_INT, 0);
         });
+        
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
         
         App.checkGLError();
     }
