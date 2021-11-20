@@ -49,12 +49,8 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
 }
 
 void main() {
-    switch(uType) {
-        case 0: //Used to render planes.
-            ioResult = vec4(ioColor, 1);
-            break;
-        
-        case 1: //Used to render cubes.
+    switch(uType) {        
+        case 0: case 1: //Used to render planes and cubes.
             vec3 lighting = calcWorldLight(uLights[0], normalize(ioNormal));
             
             for(int i = 1; i < uNumLights; i++) {

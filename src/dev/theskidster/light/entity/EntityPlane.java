@@ -1,9 +1,11 @@
 package dev.theskidster.light.entity;
 
 import dev.theskidster.light.graphics.Color;
+import static dev.theskidster.light.graphics.Color.WHITE;
 import dev.theskidster.light.graphics.Graphics;
 import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
+import org.joml.Matrix3f;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.system.MemoryStack;
 
@@ -19,6 +21,7 @@ public class EntityPlane extends Entity {
 
     private Graphics g;
     private Color color;
+    private Matrix3f normal = new Matrix3f();
     
     public EntityPlane(float x, float y, float z, Color color, float width, float depth) {
         super(x, y, z);
@@ -54,6 +57,7 @@ public class EntityPlane extends Entity {
 
     @Override
     public void update() {
+        normal.set(g.modelMatrix.invert());
         g.modelMatrix.translation(position);
     }
 
@@ -64,6 +68,7 @@ public class EntityPlane extends Entity {
         sceneProgram.setUniform("uType", 0);
         sceneProgram.setUniform("uColor", color.asVec3());
         sceneProgram.setUniform("uModel", false, g.modelMatrix);
+        sceneProgram.setUniform("uNormal", true, normal);
         
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
         

@@ -28,10 +28,12 @@ public class TestScene extends Scene {
         setCameraPosition(6, 4, 10);
         setCameraDirection(-120, 20);
         
-        entities.put("plane", new EntityPlane(0, -2, 0, Color.GRAY, 25, 25));
+        entities.put("plane", new EntityPlane(0, -2, 0, Color.create(10, 10, 10), 50, 50));
         entities.put("cube", cube);
         
-        addLight(new Light(0.5f, 0.5f, new Vector3f(2, 0, 0), Color.RED, Color.RED));
+        addLight(new Light(0.5f, 1f, new Vector3f(2, 0, 0), Color.YELLOW, Color.YELLOW));
+        
+        //addLightAtIndex(0, Light.midnight());
     }
 
     @Override
