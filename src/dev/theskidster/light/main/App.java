@@ -30,8 +30,6 @@ public final class App {
     
     public static final String ASSETS_PATH = "/dev/theskidster/light/assets/";
     
-    private final Vector3f noValue = new Vector3f();
-    
     private final Monitor monitor;
     private final Window window;
     private final Camera camera;
@@ -177,24 +175,7 @@ public final class App {
             {
                 sceneProgram.use();
                 
-                for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
-                    if(scene.getLightSources()[i] != null) {
-                        if(scene.getLightSources()[i].getEnabled()) {
-                            sceneProgram.setUniform("uLights[" + i + "].brightness", scene.getLightSources()[i].getBrightness());
-                            sceneProgram.setUniform("uLights[" + i + "].contrast",   scene.getLightSources()[i].getContrast());
-                            sceneProgram.setUniform("uLights[" + i + "].position",   scene.getLightSources()[i].getPosition());
-                            sceneProgram.setUniform("uLights[" + i + "].ambient",    scene.getLightSources()[i].getAmbientColor());
-                            sceneProgram.setUniform("uLights[" + i + "].diffuse",    scene.getLightSources()[i].getDiffuseColor());
-                        } else {
-                            sceneProgram.setUniform("uLights[" + i + "].brightness", 0);
-                            sceneProgram.setUniform("uLights[" + i + "].contrast",   0);
-                            sceneProgram.setUniform("uLights[" + i + "].position",   noValue);
-                            sceneProgram.setUniform("uLights[" + i + "].ambient",    noValue);
-                            sceneProgram.setUniform("uLights[" + i + "].diffuse",    noValue);
-                        }
-                    }
-                }
-                sceneProgram.setUniform("uNumLights", scene.getNumLights());
+                scene.setLightingUniforms(sceneProgram);
                 
                 camera.render(sceneProgram);
                 scene.render(sceneProgram, camera);

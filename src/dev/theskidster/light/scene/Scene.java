@@ -7,6 +7,7 @@ import dev.theskidster.light.main.Camera;
 import dev.theskidster.light.main.Window;
 import dev.theskidster.shadercore.GLProgram;
 import java.util.HashMap;
+import org.joml.Vector3f;
 
 /**
  * Nov 17, 2021
@@ -24,11 +25,10 @@ public abstract class Scene {
     private int numLights = 1;
     
     public final String name;
-    
     private static Camera camera;
+    private final Vector3f noValue = new Vector3f();
     
     protected final HashMap<String, Entity> entities = new HashMap<>();
-    
     private final LightSource[] lightSources = new LightSource[MAX_LIGHTS];
     
     public Scene(String name) {
@@ -37,6 +37,28 @@ public abstract class Scene {
     }
     
     public abstract void update();
+    
+    //TODO: this will be package private in XJGE.
+    public void setLightingUniforms(GLProgram sceneProgram) {
+        for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
+            if(lightSources[i] != null) {
+                if(lightSources[i].getEnabled()) {
+                    sceneProgram.setUniform("uLights[" + i + "].brightness", lightSources[i].getBrightness());
+                    sceneProgram.setUniform("uLights[" + i + "].contrast",   lightSources[i].getContrast());
+                    sceneProgram.setUniform("uLights[" + i + "].position",   lightSources[i].getPosition());
+                    sceneProgram.setUniform("uLights[" + i + "].ambient",    lightSources[i].getAmbientColor());
+                    sceneProgram.setUniform("uLights[" + i + "].diffuse",    lightSources[i].getDiffuseColor());
+                } else {
+                    sceneProgram.setUniform("uLights[" + i + "].brightness", 0);
+                    sceneProgram.setUniform("uLights[" + i + "].contrast",   0);
+                    sceneProgram.setUniform("uLights[" + i + "].position",   noValue);
+                    sceneProgram.setUniform("uLights[" + i + "].ambient",    noValue);
+                    sceneProgram.setUniform("uLights[" + i + "].diffuse",    noValue);
+                }
+            }
+        }
+        sceneProgram.setUniform("uNumLights", numLights);
+    }
     
     public void updateLightSources() {
         for(LightSource lightSource : lightSources) {
@@ -110,14 +132,6 @@ public abstract class Scene {
             JLogger.logWarning("Failed to add light object at index " + index, e);
             JLogger.setModule(null);
         }
-    }
-    
-    public int getNumLights() {
-        return numLights;
-    }
-    
-    public LightSource[] getLightSources() {
-        return lightSources;
     }
     
 }
