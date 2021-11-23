@@ -4,9 +4,11 @@ import dev.theskidster.light.entity.EntityCube;
 import dev.theskidster.light.entity.EntityPlane;
 import dev.theskidster.light.entity.EntityTeapot;
 import dev.theskidster.light.graphics.Color;
+import dev.theskidster.light.graphics.Light;
 import dev.theskidster.light.main.Camera;
 import dev.theskidster.light.scene.Scene;
 import dev.theskidster.shadercore.GLProgram;
+import org.joml.Vector3f;
 
 /**
  * Nov 17, 2021
@@ -30,9 +32,7 @@ public class TestScene extends Scene {
         entities.put("cube", cube);
         entities.put("teapot", new EntityTeapot(10, 0, 0));
         
-        //model = new Model("mod_teapot.fbx");
-        
-        //addLight(new Light(0.5f, 1f, new Vector3f(2, 0, 0), Color.LIME, Color.LIME));
+        addLight(new Light(0.5f, 1f, new Vector3f(2, 0, 0), Color.LIME, Color.LIME));
         //addLightAtIndex(0, Light.midnight());
     }
     
