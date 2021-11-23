@@ -35,7 +35,7 @@ public class ShadowMap {
     int textureWidth  = 1024;
     int textureHeight = 1024;
     
-    
+    int PCFValue = 2;
     
     ShadowMap() {
         fbo = glGenFramebuffers();

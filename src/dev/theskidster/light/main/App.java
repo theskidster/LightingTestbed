@@ -34,10 +34,11 @@ public final class App {
     private final Camera camera;
     private final GLProgram hudProgram;
     private final GLProgram sceneProgram;
+    private final GLProgram depthProgram;
     private final Font font;
     private final Background background;
+    private final ShadowMap shadowMap;
     private static Scene scene;
-    private static ShadowMap shadowMap;
     
     /*
     TODO:
@@ -85,8 +86,8 @@ public final class App {
             }};
             
             hudProgram = new GLProgram(shaderSourceFiles, "hud");
-            hudProgram.use();
             
+            hudProgram.use();
             hudProgram.addUniform(BufferType.INT,   "uType");
             hudProgram.addUniform(BufferType.FLOAT, "uOpacity");
             hudProgram.addUniform(BufferType.VEC3,  "uColor");
@@ -101,8 +102,8 @@ public final class App {
             }};
             
             sceneProgram = new GLProgram(shaderSourceFiles, "scene");
-            sceneProgram.use();
             
+            sceneProgram.use();
             sceneProgram.addUniform(BufferType.INT,  "uType");
             sceneProgram.addUniform(BufferType.INT,  "uNumLights");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
@@ -121,9 +122,25 @@ public final class App {
             }
         }
         
+        //Create shader program that will generate shadow map output.
+        {
+            var shaderSourceFiles = new LinkedList<Shader>() {{
+                add(new Shader("depthVertex.glsl", GL_VERTEX_SHADER));
+                add(new Shader("depthFragment.glsl", GL_FRAGMENT_SHADER));
+            }};
+            
+            depthProgram = new GLProgram(shaderSourceFiles, "depth");
+            
+            depthProgram.use();
+            depthProgram.addUniform(BufferType.INT, "uTexture");
+            depthProgram.addUniform(BufferType.MAT4, "uModel");
+            depthProgram.addUniform(BufferType.MAT4, "uLightSpace");
+        }
+        
         camera     = new Camera();
         font       = new Font("fnt_debug_mono.ttf", 12);
         background = new Background(0, window.getHeight() - 130, 300, 130);
+        shadowMap  = new ShadowMap();
         
         Scene.setCameraReference(camera);
     }
@@ -167,6 +184,8 @@ public final class App {
                     cycles = 0;
                 }
             }
+            
+            shadowMap.generate(scene, depthProgram, camera.up);
             
             glViewport(0, 0, window.getWidth(), window.getHeight());
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

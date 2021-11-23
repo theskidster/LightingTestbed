@@ -28,8 +28,8 @@ public abstract class Scene {
     private static Camera camera;
     private final Vector3f noValue = new Vector3f();
     
-    protected final HashMap<String, Entity> entities = new HashMap<>();
-    private final LightSource[] lightSources = new LightSource[MAX_LIGHTS];
+    public final HashMap<String, Entity> entities = new HashMap<>();
+    private final LightSource[] lightSources      = new LightSource[MAX_LIGHTS];
     
     public Scene(String name) {
         this.name = name;
@@ -42,7 +42,7 @@ public abstract class Scene {
 
     public abstract void exit();
     
-    //TODO: the follwing methods will be package private in XJGE.
+    //TODO: the following methods will be package private in XJGE.
     public void setLightingUniforms(GLProgram sceneProgram) {
         for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
             if(lightSources[i] != null) {
