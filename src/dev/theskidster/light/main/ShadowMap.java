@@ -1,5 +1,8 @@
-package dev.theskidster.light.scene;
+package dev.theskidster.light.main;
 
+import dev.theskidster.light.scene.Scene;
+import dev.theskidster.shadercore.GLProgram;
+import org.joml.Vector3f;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
@@ -24,13 +27,15 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * @author J Hoffman
  * @since  
  */
-class ShadowMap {
+public class ShadowMap {
 
     private final int fbo;
-    private final int textureHandle;
+    final int textureHandle;
     
     int textureWidth  = 1024;
     int textureHeight = 1024;
+    
+    
     
     ShadowMap() {
         fbo = glGenFramebuffers();
@@ -45,7 +50,7 @@ class ShadowMap {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
     
-    void updateTextureParameters() {
+    public void generate(Scene scene, GLProgram depthProgram, Vector3f camUp) {
         
     }
     

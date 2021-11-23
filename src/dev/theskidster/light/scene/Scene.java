@@ -38,7 +38,11 @@ public abstract class Scene {
     
     public abstract void update();
     
-    //TODO: this will be package private in XJGE.
+    public abstract void render(GLProgram sceneProgram, Camera camera);    
+
+    public abstract void exit();
+    
+    //TODO: the follwing methods will be package private in XJGE.
     public void setLightingUniforms(GLProgram sceneProgram) {
         for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
             if(lightSources[i] != null) {
@@ -71,10 +75,6 @@ public abstract class Scene {
             if(lightSource != null) lightSource.render(sceneProgram, camera.getPosition(), camera.getDirection(), camera.getUp());
         }
     }
-    
-    public abstract void render(GLProgram sceneProgram, Camera camera);    
-
-    public abstract void exit();
     
     public static void setCameraReference(Camera reference) {
         camera = reference;

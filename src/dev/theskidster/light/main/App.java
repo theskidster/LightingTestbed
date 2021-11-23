@@ -9,7 +9,6 @@ import dev.theskidster.shadercore.GLProgram;
 import dev.theskidster.shadercore.Shader;
 import dev.theskidster.shadercore.ShaderCore;
 import java.util.LinkedList;
-import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.opengl.GL;
 import static org.lwjgl.opengl.GL20.*;
@@ -38,6 +37,7 @@ public final class App {
     private final Font font;
     private final Background background;
     private static Scene scene;
+    private static ShadowMap shadowMap;
     
     /*
     TODO:

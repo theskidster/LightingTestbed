@@ -23,4 +23,6 @@ public abstract class Entity {
     
     public abstract void render(GLProgram sceneProgram);
     
+    public abstract void castShadow(GLProgram depthProgram);
+    
 }

@@ -123,4 +123,8 @@ public class EntityCube extends Entity {
         App.checkGLError();
     }
 
+    @Override
+    public void castShadow(GLProgram depthProgram) {
+    }
+
 }

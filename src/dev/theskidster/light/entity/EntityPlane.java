@@ -75,4 +75,8 @@ public class EntityPlane extends Entity {
         App.checkGLError();
     }
 
+    @Override
+    public void castShadow(GLProgram depthProgram) {
+    }
+
 }
