@@ -83,7 +83,7 @@ public final class LightSource {
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture.handle);
         glBindVertexArray(g.vao);
         
@@ -91,6 +91,7 @@ public final class LightSource {
         sceneProgram.setUniform("uModel", false, g.modelMatrix);
         sceneProgram.setUniform("uColor", light.ambientColor.asVec3());
         sceneProgram.setUniform("uTexCoords", texCoords);
+        sceneProgram.setUniform("uTexture", 0);
         
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
         glDisable(GL_BLEND);

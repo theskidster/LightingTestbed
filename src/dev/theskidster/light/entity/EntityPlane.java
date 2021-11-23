@@ -61,7 +61,7 @@ public class EntityPlane extends Entity {
     }
 
     @Override
-    public void render(GLProgram sceneProgram) {
+    public void render(GLProgram sceneProgram, int shadowMapTexHandle) {
         glBindVertexArray(g.vao);
         
         sceneProgram.setUniform("uType", 0);

@@ -20,13 +20,13 @@ public class ShadowMap {
     private final int fbo;
     final int textureHandle;
     
-    int textureWidth  = 2048;
-    int textureHeight = 2048;
+    int textureWidth  = 4096;
+    int textureHeight = 4096;
     
     float nearPlane = 1f;
     float farPlane  = 100f;
     
-    int PCFValue = 0;
+    int PCFValue = 1;
     
     private final Vector3f lightDir  = new Vector3f();
     private final Matrix4f lightView = new Matrix4f();

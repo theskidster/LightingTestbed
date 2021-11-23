@@ -21,7 +21,7 @@ public abstract class Entity {
     
     public abstract void update();
     
-    public abstract void render(GLProgram sceneProgram);
+    public abstract void render(GLProgram sceneProgram, int shadowMapTexHandle);
     
     public abstract void castShadow(GLProgram depthProgram);
     

@@ -201,7 +201,7 @@ public final class App {
                 scene.setLightingUniforms(sceneProgram, shadowMap.PCFValue, shadowMap.lightSpace);
                 
                 camera.render(sceneProgram);
-                scene.render(sceneProgram, camera);
+                scene.render(sceneProgram, camera, shadowMap.textureHandle);
                 scene.renderLightSources(sceneProgram, camera);
             }
             

@@ -41,7 +41,7 @@ public abstract class Scene {
     
     public abstract void update();
     
-    public abstract void render(GLProgram sceneProgram, Camera camera);    
+    public abstract void render(GLProgram sceneProgram, Camera camera, int shadowMapTexHandle);    
 
     public abstract void exit();
     

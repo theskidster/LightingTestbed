@@ -106,7 +106,7 @@ public class EntityCube extends Entity {
     }
     
     @Override
-    public void render(GLProgram sceneProgram) {
+    public void render(GLProgram sceneProgram, int shadowMapTexHandle) {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glBindVertexArray(g.vao);
