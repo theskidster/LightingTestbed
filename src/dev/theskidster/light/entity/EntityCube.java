@@ -125,6 +125,19 @@ public class EntityCube extends Entity {
 
     @Override
     public void castShadow(GLProgram depthProgram) {
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        glBindVertexArray(g.vao);
+        
+        depthProgram.setUniform("uModel", false, g.modelMatrix);
+        
+        glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
+        glCullFace(GL_BACK);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+        
+        App.checkGLError();
     }
 
 }

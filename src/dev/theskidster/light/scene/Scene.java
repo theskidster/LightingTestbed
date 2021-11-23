@@ -7,6 +7,7 @@ import dev.theskidster.light.main.Camera;
 import dev.theskidster.light.main.Window;
 import dev.theskidster.shadercore.GLProgram;
 import java.util.HashMap;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 /**
@@ -29,7 +30,9 @@ public abstract class Scene {
     private final Vector3f noValue = new Vector3f();
     
     public final HashMap<String, Entity> entities = new HashMap<>();
-    private final LightSource[] lightSources      = new LightSource[MAX_LIGHTS];
+    
+    private final LightSource[] lightSources     = new LightSource[MAX_LIGHTS];
+    private final LightSource[] lightSourcesCopy = new LightSource[MAX_LIGHTS];
     
     public Scene(String name) {
         this.name = name;
@@ -43,7 +46,7 @@ public abstract class Scene {
     public abstract void exit();
     
     //TODO: the following methods will be package private in XJGE.
-    public void setLightingUniforms(GLProgram sceneProgram) {
+    public void setLightingUniforms(GLProgram sceneProgram, int PCFValue, Matrix4f lightSpace) {
         for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
             if(lightSources[i] != null) {
                 if(lightSources[i].getEnabled()) {
@@ -61,7 +64,15 @@ public abstract class Scene {
                 }
             }
         }
+        
         sceneProgram.setUniform("uNumLights", numLights);
+        sceneProgram.setUniform("uPCFValue", PCFValue);
+        sceneProgram.setUniform("uLightSpace", false, lightSpace);
+    }
+    
+    public LightSource[] getLightSources() {
+        System.arraycopy(lightSources, 0, lightSourcesCopy, 0, numLights);
+        return lightSourcesCopy;
     }
     
     public void updateLightSources() {

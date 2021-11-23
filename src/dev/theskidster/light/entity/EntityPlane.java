@@ -1,7 +1,6 @@
 package dev.theskidster.light.entity;
 
 import dev.theskidster.light.graphics.Color;
-import static dev.theskidster.light.graphics.Color.WHITE;
 import dev.theskidster.light.graphics.Graphics;
 import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
@@ -77,6 +76,15 @@ public class EntityPlane extends Entity {
 
     @Override
     public void castShadow(GLProgram depthProgram) {
+        glEnable(GL_DEPTH_TEST);
+        glBindVertexArray(g.vao);
+        
+        depthProgram.setUniform("uModel", false, g.modelMatrix);
+        
+        glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
+        glDisable(GL_DEPTH_TEST);
+        
+        App.checkGLError();
     }
 
 }

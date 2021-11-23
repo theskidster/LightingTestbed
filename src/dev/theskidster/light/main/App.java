@@ -106,12 +106,16 @@ public final class App {
             sceneProgram.use();
             sceneProgram.addUniform(BufferType.INT,  "uType");
             sceneProgram.addUniform(BufferType.INT,  "uNumLights");
+            sceneProgram.addUniform(BufferType.INT,  "uTexture");
+            sceneProgram.addUniform(BufferType.INT,  "uShadowMap");
+            sceneProgram.addUniform(BufferType.INT,  "uPCFValue");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
             sceneProgram.addUniform(BufferType.VEC3, "uColor");
             sceneProgram.addUniform(BufferType.MAT3, "uNormal");
             sceneProgram.addUniform(BufferType.MAT4, "uModel");
             sceneProgram.addUniform(BufferType.MAT4, "uView");
             sceneProgram.addUniform(BufferType.MAT4, "uProjection");
+            sceneProgram.addUniform(BufferType.MAT4, "uLightSpace");
             
             for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
                 sceneProgram.addUniform(BufferType.FLOAT, "uLights[" + i + "].brightness");
@@ -194,7 +198,7 @@ public final class App {
             {
                 sceneProgram.use();
                 
-                scene.setLightingUniforms(sceneProgram);
+                scene.setLightingUniforms(sceneProgram, shadowMap.PCFValue, shadowMap.lightSpace);
                 
                 camera.render(sceneProgram);
                 scene.render(sceneProgram, camera);

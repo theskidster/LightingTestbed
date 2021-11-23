@@ -6,6 +6,7 @@ in vec2 ioTexCoords;
 in vec3 ioColor;
 in vec3 ioNormal;
 in vec3 ioFragPos;
+in vec4 ioLightFrag;
 
 struct Light {
     float brightness;
@@ -17,17 +18,56 @@ struct Light {
 
 uniform int uType;
 uniform int uNumLights;
+uniform int uPCFValue;
 uniform sampler2D uTexture;
+uniform sampler2D uShadowMap;
 uniform Light uLights[MAX_LIGHTS];
 
 out vec4 ioResult;
 
+float calcShadow(float dotLightNormal) {
+    vec3 pos = ioLightFrag.xyz * 0.5 + 0.5;
+
+    if(pos.z > 1) pos.z = 1;
+    
+    float depth = texture(uShadowMap, pos.xy).r;
+    float bias  = max(0.0009 * (1 - dotLightNormal), 0.00003);
+    
+    if(uPCFValue > 0) {
+        vec2 texelSize = 1.0 / textureSize(uShadowMap, 0);
+        float pcfValue = 0;
+        float factor   = 1 / (uPCFValue * 2.0 + 1.0);
+
+        for(int x = -uPCFValue; x <= uPCFValue; x++) {
+            for(int y = -uPCFValue; y <= uPCFValue; y++) {
+                float pcfDepth = texture(uShadowMap, pos.xy + vec2(x, y) * texelSize).r; 
+
+                if(pos.z + bias < pcfDepth) {
+                    pcfValue += factor;
+                }
+            }
+        }
+
+        if(pcfValue > 1) pcfValue = 1;
+
+        return pcfValue;
+    } else {
+        return (depth + bias) < pos.z ? 0 : 1;
+    }
+}
+
 vec3 calcWorldLight(Light light, vec3 normal) {
     vec3 direction = normalize(light.position);
-    float diff     = max(dot(normal, direction), -light.contrast);
-    vec3 diffuse   = diff * light.ambient * light.diffuse;
-
-    return (light.ambient + diffuse) * light.brightness;
+    
+    float diff   = max(dot(normal, direction), 0);
+    vec3 diffuse = diff * uLights[0].diffuse * uLights[0].brightness;
+    vec3 ambient = uLights[0].ambient * uLights[0].contrast;
+    
+    float dotLightNormal = dot(direction, normal);
+    float shadow         = calcShadow(dotLightNormal);
+    vec3 lighting        = (shadow * diffuse + ambient) * ioColor;
+    
+    return lighting;
 }
 
 vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
