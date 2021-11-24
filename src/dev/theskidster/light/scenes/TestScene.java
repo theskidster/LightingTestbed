@@ -20,7 +20,9 @@ import org.joml.Vector3f;
  */
 public class TestScene extends Scene {
     
-    private EntityCube cube = new EntityCube(-3, 0, 0, 1, 2, 1);
+    public static Light pointLight = new Light(1f, 1f, new Vector3f(2, 1, 0), Color.RED, Color.RED, Color.RED);
+    
+    private EntityCube cube = new EntityCube(-12, 3, 0, 5, 5, 5);
     
     public TestScene() {
         super("test");
@@ -32,16 +34,14 @@ public class TestScene extends Scene {
         entities.put("cube", cube);
         entities.put("teapot", new EntityTeapot(10, 0, 0));
         
-        cube.color = Color.BLUE;
-        
-        addLight(new Light(0.005f, 0, new Vector3f(2, 0, 0), Color.YELLOW, Color.YELLOW, Color.WHITE));
+        addLight(pointLight);
         addLightAtIndex(0, Light.midnight());
     }
     
     @Override
     public void update() {
-        cube.angleY += 1f;
-        cube.angleZ += 1f;
+        cube.angleY += 0.5f;
+        cube.angleZ += 0.5f;
         
         entities.values().forEach(entity -> entity.update());
     }

@@ -1,5 +1,6 @@
 package dev.theskidster.light.main;
 
+import dev.theskidster.light.scenes.TestScene;
 import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.system.MemoryStack;
@@ -80,6 +81,10 @@ public final class Window {
         
         glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
             if(key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(handle, true);
+            
+            if(key == GLFW_KEY_1 && action == GLFW_PRESS) {
+                TestScene.pointLight.enabled = !TestScene.pointLight.enabled;
+            }
         });
     }
     

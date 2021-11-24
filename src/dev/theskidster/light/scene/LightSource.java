@@ -130,5 +130,9 @@ public final class LightSource {
     public Vector3f getDiffuseColor() {
         return light.diffuseColor.asVec3();
     }
+
+    public Vector3f getSpecularColor() {
+        return light.specularColor.asVec3();
+    }
     
 }

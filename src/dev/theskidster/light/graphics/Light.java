@@ -24,7 +24,7 @@ public class Light {
     
     public Light(float brightness, float contrast, Vector3f position, Color ambientColor, Color diffuseColor, Color specularColor) {
         this.brightness    = brightness;
-        this.contrast      = contrast;
+        this.contrast      = contrast; //TODO: clamp between 0 and 1.
         this.position      = position;
         this.ambientColor  = ambientColor;
         this.diffuseColor  = diffuseColor;

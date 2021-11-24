@@ -124,6 +124,7 @@ public final class App {
                 sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].position");
                 sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].ambient");
                 sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].diffuse");
+                sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].specular");
             }
         }
         

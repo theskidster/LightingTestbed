@@ -3,6 +3,7 @@ package dev.theskidster.light.scene;
 import dev.theskidster.jlogger.JLogger;
 import dev.theskidster.light.entity.Entity;
 import dev.theskidster.light.graphics.Light;
+import dev.theskidster.light.main.App;
 import dev.theskidster.light.main.Camera;
 import dev.theskidster.light.main.Window;
 import dev.theskidster.shadercore.GLProgram;
@@ -55,12 +56,28 @@ public abstract class Scene {
                     sceneProgram.setUniform("uLights[" + i + "].position",   lightSources[i].getPosition());
                     sceneProgram.setUniform("uLights[" + i + "].ambient",    lightSources[i].getAmbientColor());
                     sceneProgram.setUniform("uLights[" + i + "].diffuse",    lightSources[i].getDiffuseColor());
+                    sceneProgram.setUniform("uLights[" + i + "].specular",   lightSources[i].getSpecularColor());
                 } else {
-                    sceneProgram.setUniform("uLights[" + i + "].brightness", 0);
-                    sceneProgram.setUniform("uLights[" + i + "].contrast",   0);
+                    App.checkGLError();
+                    
+                    sceneProgram.setUniform("uLights[" + i + "].brightness", 0f);
+                    
+                    App.checkGLError();
+                    
+                    sceneProgram.setUniform("uLights[" + i + "].contrast",   0f);
+                    
+                    App.checkGLError();
+                    
                     sceneProgram.setUniform("uLights[" + i + "].position",   noValue);
+                    
+                    App.checkGLError();
+                    
                     sceneProgram.setUniform("uLights[" + i + "].ambient",    noValue);
+                    
+                    App.checkGLError();
+                    
                     sceneProgram.setUniform("uLights[" + i + "].diffuse",    noValue);
+                    sceneProgram.setUniform("uLights[" + i + "].specular",   noValue);
                 }
             }
         }
@@ -68,6 +85,31 @@ public abstract class Scene {
         sceneProgram.setUniform("uNumLights", numLights);
         sceneProgram.setUniform("uPCFValue", PCFValue);
         sceneProgram.setUniform("uLightSpace", false, lightSpace);
+        
+        App.checkGLError();
+        
+        /*
+        vec3 ambient = light.ambient;
+
+        vec3 lightDir = normalize(light.position - ioFragPos);
+        float diff    = max(dot(normal, lightDir), -light.contrast);
+        vec3 diffuse  = diff * light.diffuse;
+
+        float linear    = 0.0014f / light.brightness;
+        float quadratic = 0.000007f / light.brightness;
+        float dist      = length(light.position - ioFragPos);
+        float attenuate = 1.0f / (1.0f + linear * dist + quadratic * (dist * dist));
+
+        vec3 cameraDir  = normalize(uCamPos - ioFragPos);
+        vec3 reflectDir = reflect(-lightDir, normal);
+        float spec      = pow(max(dot(cameraDir, reflectDir), 0), 256);
+        vec3 specular   = spec * light.specular;
+
+        ambient *= attenuate;
+        diffuse *= attenuate;
+
+        return (ambient + diffuse + specular) * ioColor;
+        */
     }
     
     public LightSource[] getLightSources() {
