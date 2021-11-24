@@ -76,7 +76,7 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
     vec3 lightDir = normalize(light.position - ioFragPos);
     
     float diff   = max(dot(normal, lightDir), 0);
-    vec3 ambient = light.ambient * light.contrast;
+    vec3 ambient = light.ambient * (1 - light.contrast);
     vec3 diffuse = diff * light.diffuse * light.brightness;
     
     float linear    = 0.14f / light.brightness;

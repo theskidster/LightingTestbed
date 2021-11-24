@@ -22,13 +22,30 @@ public class Light {
     public Color diffuseColor;
     public Color specularColor;
     
-    public Light(float brightness, float contrast, Vector3f position, Color ambientColor, Color diffuseColor, Color specularColor) {
+    public Light(float brightness, float contrast, Vector3f position, Color ambientColor, Color diffuseColor, Color specularColor) {        
         this.brightness    = brightness;
-        this.contrast      = contrast;
+        this.contrast      = clamp(0, 1, contrast);
+        
+        System.out.println(this.contrast);
+        
         this.position      = position;
         this.ambientColor  = ambientColor;
         this.diffuseColor  = diffuseColor;
         this.specularColor = specularColor;
+    }
+    
+    private float clamp(float minValue, float maxValue, float userValue) {
+        float result = 0;
+        
+        if(userValue > maxValue) {
+            result = maxValue;
+        } else if(userValue < minValue) {
+            result = minValue;
+        } else {
+            result = userValue;
+        }
+        
+        return result;
     }
     
     public static final Light daylight() {
