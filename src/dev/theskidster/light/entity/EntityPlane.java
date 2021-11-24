@@ -68,6 +68,7 @@ public class EntityPlane extends Entity {
         sceneProgram.setUniform("uColor", color.asVec3());
         sceneProgram.setUniform("uModel", false, g.modelMatrix);
         sceneProgram.setUniform("uNormal", true, normal);
+        sceneProgram.setUniform("uShine", 256);
         
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
         

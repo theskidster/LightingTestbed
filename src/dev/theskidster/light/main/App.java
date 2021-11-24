@@ -109,6 +109,7 @@ public final class App {
             sceneProgram.addUniform(BufferType.INT,  "uTexture");
             sceneProgram.addUniform(BufferType.INT,  "uShadowMap");
             sceneProgram.addUniform(BufferType.INT,  "uPCFValue");
+            sceneProgram.addUniform(BufferType.INT,  "uShine");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
             sceneProgram.addUniform(BufferType.VEC3, "uColor");
             sceneProgram.addUniform(BufferType.VEC3, "uCamPos");

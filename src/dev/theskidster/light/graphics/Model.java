@@ -201,7 +201,7 @@ public class Model {
         meshes.forEach(mesh -> mesh.modelMatrix.scale(factor));
     }
     
-    public void render(GLProgram sceneProgram, int shadowMapTexHandle) {
+    public void render(GLProgram sceneProgram, int shadowMapTexHandle, int shineValue) {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         
@@ -218,6 +218,7 @@ public class Model {
             sceneProgram.setUniform("uModel", false, mesh.modelMatrix);
             sceneProgram.setUniform("uNormal", true, normal);
             sceneProgram.setUniform("uColor", color.asVec3());
+            sceneProgram.setUniform("uShine", shineValue); //TODO: let material of mesh define this.
             sceneProgram.setUniform("uTexture", 0);
             sceneProgram.setUniform("uShadowMap", 1);
             

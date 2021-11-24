@@ -21,6 +21,7 @@ struct Light {
 uniform int uType;
 uniform int uNumLights;
 uniform int uPCFValue;
+uniform int uShine;
 uniform vec3 uCamPos;
 uniform sampler2D uTexture;
 uniform sampler2D uShadowMap;
@@ -68,12 +69,12 @@ vec3 calcWorldLight(Light light, vec3 normal) {
     
     vec3 cameraDir  = normalize(uCamPos - ioFragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec      = pow(max(dot(cameraDir, reflectDir), 0), 256);
+    float spec      = pow(max(dot(cameraDir, reflectDir), 0), uShine);
     vec3 specular   = spec * light.specular;
     
     float dotLightNormal = dot(lightDir, normal);
     float shadow         = calcShadow(dotLightNormal);
-    vec3 lighting        = (diffuse + ambient + specular) * ioColor;
+    vec3 lighting        = (shadow * diffuse + ambient + specular) * ioColor;
     
     return lighting;
 }
@@ -95,7 +96,7 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
     
     vec3 cameraDir  = normalize(uCamPos - ioFragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec      = pow(max(dot(cameraDir, reflectDir), 0), 256);
+    float spec      = pow(max(dot(cameraDir, reflectDir), 0), uShine);
     vec3 specular   = spec * light.specular;
     
     vec3 lighting = (diffuse + ambient + specular) * ioColor;

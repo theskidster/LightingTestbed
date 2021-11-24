@@ -28,15 +28,15 @@ public class EntityTeapot extends Entity {
         model.delocalizeNormal();
         model.meshes.forEach(mesh -> {
             mesh.modelMatrix.translation(position);
-            mesh.modelMatrix.rotateX((float) Math.toRadians(angle += 0.1f));
-            mesh.modelMatrix.rotateY((float) Math.toRadians(angle += 0.1f));
+            mesh.modelMatrix.rotateX((float) Math.toRadians(-135f));
+            mesh.modelMatrix.rotateY((float) Math.toRadians(90f));
             mesh.modelMatrix.scale(0.15f);
         });
     }
 
     @Override
     public void render(GLProgram sceneProgram, int shadowMapTexHandle) {
-        model.render(sceneProgram, shadowMapTexHandle);
+        model.render(sceneProgram, shadowMapTexHandle, 32);
     }
 
     @Override
