@@ -53,29 +53,17 @@ public abstract class Scene {
                 if(lightSources[i].getEnabled()) {
                     sceneProgram.setUniform("uLights[" + i + "].brightness", lightSources[i].getBrightness());
                     sceneProgram.setUniform("uLights[" + i + "].contrast",   lightSources[i].getContrast());
+                    sceneProgram.setUniform("uLights[" + i + "].distance",   lightSources[i].getDistance());
                     sceneProgram.setUniform("uLights[" + i + "].position",   lightSources[i].getPosition());
                     sceneProgram.setUniform("uLights[" + i + "].ambient",    lightSources[i].getAmbientColor());
                     sceneProgram.setUniform("uLights[" + i + "].diffuse",    lightSources[i].getDiffuseColor());
                     sceneProgram.setUniform("uLights[" + i + "].specular",   lightSources[i].getSpecularColor());
                 } else {
-                    App.checkGLError();
-                    
-                    sceneProgram.setUniform("uLights[" + i + "].brightness", 0f);
-                    
-                    App.checkGLError();
-                    
+                    sceneProgram.setUniform("uLights[" + i + "].brightness", 0f); //f needs to be included otherwise it'll use the int version!
                     sceneProgram.setUniform("uLights[" + i + "].contrast",   0f);
-                    
-                    App.checkGLError();
-                    
+                    sceneProgram.setUniform("uLights[" + i + "].distance",   0f); //TODO: include note that distance does not necessarily align with world coordinates.
                     sceneProgram.setUniform("uLights[" + i + "].position",   noValue);
-                    
-                    App.checkGLError();
-                    
                     sceneProgram.setUniform("uLights[" + i + "].ambient",    noValue);
-                    
-                    App.checkGLError();
-                    
                     sceneProgram.setUniform("uLights[" + i + "].diffuse",    noValue);
                     sceneProgram.setUniform("uLights[" + i + "].specular",   noValue);
                 }

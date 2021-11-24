@@ -1,0 +1,32 @@
+--------------------------------------------------------------------------------
+INFO: OS NAME:		Windows 10
+INFO: JAVA VERSION:	15.0.2
+INFO: GLFW VERSION:	3.4.0 Win32 WGL Null EGL OSMesa VisualC DLL
+INFO: OPENGL VERSION:	4.5.0 - Build 23.20.16.4973
+--------------------------------------------------------------------------------
+
+INFO (shadercore): Shader program: "hud" linked successfully.
+
+11-23-2021 8:26PM
+ERROR (shadercore): Failed to compile GLSL file: "sceneFragment.glsl" ERROR: 0:83: 'GL_ARB_gpu_shader_fp64' :  extension is disabled or not available
+ERROR: 0:83: '=' :  cannot convert from 'float' to 'highp double'
+ERROR: 0:84: 'GL_ARB_gpu_shader_fp64' :  extension is disabled or not available
+ERROR: 0:84: '=' :  cannot convert from 'float' to 'highp double'
+ERROR: 0:86: 'GL_ARB_gpu_shader_fp64' :  extension is disabled or not available
+ERROR: 0:86: '*' : wrong operand types no operation '*' exists that takes a left-hand operand of type 'highp double' and a right operand of type 'highp float' (or there is no acceptable conversion)
+ERROR: 0:86: '+' : wrong operand types no operation '+' exists that takes a left-hand operand of type 'const float' and a right operand of type 'highp double' (or there is no acceptable conversion)
+ERROR: 0:86: '*' : wrong operand types no operation '*' exists that takes a left-hand operand of type 'highp double' and a right operand of type 'highp float' (or there is no acceptable conversion)
+ERROR: 0:86: '+' : wrong operand types no operation '+' exists that takes a left-hand operand of type 'const float' and a right operand of type 'highp double' (or there is no acceptable conversion)
+ERROR: 0:86: '=' :  cannot convert from 'const float' to 'highp double'
+ERROR: 0:88: 'assign' :  cannot convert from 'highp double' to '3-component vector of highp float'
+ERROR: 0:89: 'assign' :  cannot convert from 'highp double' to '3-component vector of highp float'
+
+
+
+java.lang.RuntimeException
+	dev.theskidster.jlogger.JLogger.logSevere(JLogger.java:161)
+	dev.theskidster.shadercore.Shader.<init>(Shader.java:61)
+	dev.theskidster.light.main.App$2.<init>(App.java:101)
+	dev.theskidster.light.main.App.<init>(App.java:99)
+	dev.theskidster.light.main.Main.main(Main.java:14)
+

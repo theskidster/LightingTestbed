@@ -11,6 +11,7 @@ in vec4 ioLightFrag;
 struct Light {
     float brightness;
     float contrast;
+    float distance;
     vec3 position;
     vec3 ambient;
     vec3 diffuse;
@@ -79,8 +80,10 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
     vec3 ambient = light.ambient * (1 - light.contrast);
     vec3 diffuse = diff * light.diffuse * light.brightness;
     
-    float linear    = 0.14f / light.brightness;
-    float quadratic = 0.07f / light.brightness;
+    float linear    = 0.14f / light.distance;
+    float quadratic = 0.07f / light.distance;
+    //float linear    = 0.14f / light.brightness;
+    //float quadratic = 0.07f / light.brightness;
     float dist      = length(light.position - ioFragPos);
     float attenuate = 1.0f / (1.0f + linear * dist + quadratic * (dist * dist));
     

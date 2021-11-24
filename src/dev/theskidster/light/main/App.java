@@ -121,6 +121,7 @@ public final class App {
             for(int i = 0; i < Scene.MAX_LIGHTS; i++) {
                 sceneProgram.addUniform(BufferType.FLOAT, "uLights[" + i + "].brightness");
                 sceneProgram.addUniform(BufferType.FLOAT, "uLights[" + i + "].contrast");
+                sceneProgram.addUniform(BufferType.FLOAT, "uLights[" + i + "].distance");
                 sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].position");
                 sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].ambient");
                 sceneProgram.addUniform(BufferType.VEC3,  "uLights[" + i + "].diffuse");

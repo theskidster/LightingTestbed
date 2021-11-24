@@ -1,0 +1,22 @@
+--------------------------------------------------------------------------------
+INFO: OS NAME:		Windows 10
+INFO: JAVA VERSION:	15.0.2
+INFO: GLFW VERSION:	3.4.0 Win32 WGL Null EGL OSMesa VisualC DLL
+INFO: OPENGL VERSION:	4.5.0 - Build 23.20.16.4973
+--------------------------------------------------------------------------------
+
+INFO (shadercore): Shader program: "hud" linked successfully.
+
+11-23-2021 8:47PM
+ERROR (shadercore): Failed to compile GLSL file: "sceneFragment.glsl" ERROR: 0:83: '' : gpu_shader5 extension not enabled 
+ERROR: 0:84: '' : gpu_shader5 extension not enabled 
+
+
+
+java.lang.RuntimeException
+	dev.theskidster.jlogger.JLogger.logSevere(JLogger.java:161)
+	dev.theskidster.shadercore.Shader.<init>(Shader.java:61)
+	dev.theskidster.light.main.App$2.<init>(App.java:101)
+	dev.theskidster.light.main.App.<init>(App.java:99)
+	dev.theskidster.light.main.Main.main(Main.java:14)
+

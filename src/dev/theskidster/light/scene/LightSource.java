@@ -119,6 +119,10 @@ public final class LightSource {
         return light.contrast;
     }
     
+    public float getDistance() {
+        return light.distance;
+    }
+    
     public Vector3f getPosition() {
         return light.position;
     }
