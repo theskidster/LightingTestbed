@@ -21,13 +21,15 @@ public class EntityTeapot extends Entity {
         model = new Model("mod_teapot.fbx");
     }
 
+    float angle = 0;
+    
     @Override
     public void update() {
         model.delocalizeNormal();
         model.meshes.forEach(mesh -> {
             mesh.modelMatrix.translation(position);
-            mesh.modelMatrix.rotateX((float) Math.toRadians(-135));
-            mesh.modelMatrix.rotateY((float) Math.toRadians(90));
+            mesh.modelMatrix.rotateX((float) Math.toRadians(angle += 0.1f));
+            mesh.modelMatrix.rotateY((float) Math.toRadians(angle += 0.1f));
             mesh.modelMatrix.scale(0.15f);
         });
     }

@@ -32,7 +32,7 @@ public class TestScene extends Scene {
         
         entities.put("plane", new EntityPlane(0, -2, 0, Color.SILVER, 50, 50));
         entities.put("cube", cube);
-        entities.put("teapot", new EntityTeapot(10, 0, 0));
+        entities.put("teapot", new EntityTeapot(10, 2.5f, 0));
         
         addLight(pointLight);
         addLightAtIndex(0, Light.midnight());

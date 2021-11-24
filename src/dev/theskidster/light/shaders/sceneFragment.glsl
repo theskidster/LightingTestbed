@@ -66,9 +66,14 @@ vec3 calcWorldLight(Light light, vec3 normal) {
     vec3 diffuse = diff * uLights[0].diffuse * uLights[0].brightness;
     vec3 ambient = uLights[0].ambient * (1 - uLights[0].contrast);
     
+    vec3 cameraDir  = normalize(uCamPos - ioFragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec      = pow(max(dot(cameraDir, reflectDir), 0), 256);
+    vec3 specular   = spec * light.specular;
+    
     float dotLightNormal = dot(lightDir, normal);
     float shadow         = calcShadow(dotLightNormal);
-    vec3 lighting        = (shadow * diffuse + ambient) * ioColor;
+    vec3 lighting        = (diffuse + ambient + specular) * ioColor;
     
     return lighting;
 }
@@ -82,15 +87,18 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
     
     float linear    = 0.14f / light.distance;
     float quadratic = 0.07f / light.distance;
-    //float linear    = 0.14f / light.brightness;
-    //float quadratic = 0.07f / light.brightness;
     float dist      = length(light.position - ioFragPos);
     float attenuate = 1.0f / (1.0f + linear * dist + quadratic * (dist * dist));
     
     ambient *= attenuate;
     diffuse *= attenuate;
     
-    vec3 lighting = (diffuse + ambient) * ioColor;
+    vec3 cameraDir  = normalize(uCamPos - ioFragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec      = pow(max(dot(cameraDir, reflectDir), 0), 256);
+    vec3 specular   = spec * light.specular;
+    
+    vec3 lighting = (diffuse + ambient + specular) * ioColor;
     
     vec3 camPos = uCamPos;
     
