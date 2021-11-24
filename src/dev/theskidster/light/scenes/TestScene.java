@@ -20,7 +20,7 @@ import org.joml.Vector3f;
  */
 public class TestScene extends Scene {
     
-    public static Light pointLight = new Light(1f, 1f, new Vector3f(2, 1, 0), Color.RED, Color.RED, Color.RED);
+    public static Light pointLight = new Light(2f, 0f, new Vector3f(2, 1, 0), Color.RED, Color.RED, Color.RED);
     
     private EntityCube cube = new EntityCube(-12, 3, 0, 5, 5, 5);
     
