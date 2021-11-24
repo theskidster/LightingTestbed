@@ -63,7 +63,7 @@ vec3 calcWorldLight(Light light, vec3 normal) {
     
     float diff   = max(dot(normal, lightDir), 0);
     vec3 diffuse = diff * uLights[0].diffuse * uLights[0].brightness;
-    vec3 ambient = uLights[0].ambient * uLights[0].contrast;
+    vec3 ambient = uLights[0].ambient * (1 - uLights[0].contrast);
     
     float dotLightNormal = dot(lightDir, normal);
     float shadow         = calcShadow(dotLightNormal);
