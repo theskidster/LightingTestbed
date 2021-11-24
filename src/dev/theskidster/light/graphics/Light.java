@@ -25,13 +25,14 @@ public class Light {
     public Light(float brightness, float contrast, Vector3f position, Color ambientColor, Color diffuseColor, Color specularColor) {        
         this.brightness    = brightness;
         this.contrast      = clamp(0, 1, contrast);
-        
-        System.out.println(this.contrast);
-        
         this.position      = position;
         this.ambientColor  = ambientColor;
         this.diffuseColor  = diffuseColor;
         this.specularColor = specularColor;
+    }
+    
+    public Light(float brightness, float contrast, Vector3f position, Color color) {
+        this(brightness, contrast, position, color, color, color);
     }
     
     private float clamp(float minValue, float maxValue, float userValue) {
@@ -49,7 +50,7 @@ public class Light {
     }
     
     public static final Light daylight() {
-        return new Light(1, 0.45f, new Vector3f(-10, 30, 7.5f), Color.WHITE, Color.WHITE, Color.WHITE);
+        return new Light(1, 0.45f, new Vector3f(-10, 30, 7.5f), Color.WHITE);
     }
     
     public static final Light sunset() {
