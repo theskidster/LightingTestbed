@@ -14,11 +14,13 @@ struct Light {
     vec3 position;
     vec3 ambient;
     vec3 diffuse;
+    vec3 specular;
 };
 
 uniform int uType;
 uniform int uNumLights;
 uniform int uPCFValue;
+uniform vec3 uCamPos;
 uniform sampler2D uTexture;
 uniform sampler2D uShadowMap;
 uniform Light uLights[MAX_LIGHTS];
@@ -85,7 +87,7 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
     ambient *= attenuate;
     diffuse *= attenuate;
 
-    return (ambient + diffuse) * light.brightness;
+    return (ambient + diffuse) * ioColor;
 }
 
 void main() {

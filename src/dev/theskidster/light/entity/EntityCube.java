@@ -1,6 +1,6 @@
 package dev.theskidster.light.entity;
 
-import static dev.theskidster.light.graphics.Color.WHITE;
+import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.graphics.Graphics;
 import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
@@ -21,6 +21,8 @@ public class EntityCube extends Entity {
     public float angleX;
     public float angleY;
     public float angleZ;
+    
+    public Color color = Color.WHITE;
     
     private Graphics g;
     private Matrix3f normal = new Matrix3f();
@@ -112,7 +114,7 @@ public class EntityCube extends Entity {
         glBindVertexArray(g.vao);
         
         sceneProgram.setUniform("uType", 1);
-        sceneProgram.setUniform("uColor", WHITE.asVec3());
+        sceneProgram.setUniform("uColor", color.asVec3());
         sceneProgram.setUniform("uModel", false, g.modelMatrix);
         sceneProgram.setUniform("uNormal", true, normal);
         

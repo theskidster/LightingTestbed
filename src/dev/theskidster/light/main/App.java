@@ -111,6 +111,7 @@ public final class App {
             sceneProgram.addUniform(BufferType.INT,  "uPCFValue");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
             sceneProgram.addUniform(BufferType.VEC3, "uColor");
+            sceneProgram.addUniform(BufferType.VEC3, "uCamPos");
             sceneProgram.addUniform(BufferType.MAT3, "uNormal");
             sceneProgram.addUniform(BufferType.MAT4, "uModel");
             sceneProgram.addUniform(BufferType.MAT4, "uView");
@@ -198,6 +199,7 @@ public final class App {
             {
                 sceneProgram.use();
                 
+                sceneProgram.setUniform("uCamPos", camera.position);
                 scene.setLightingUniforms(sceneProgram, shadowMap.PCFValue, shadowMap.lightSpace);
                 
                 camera.render(sceneProgram);
