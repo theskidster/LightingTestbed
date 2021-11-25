@@ -51,16 +51,28 @@ public class Light {
         return result;
     }
     
+    ////////////////////////////////////////////////////////////////////////////
+    //WORLD LIGHTS:
+    ////////////////////////////////////////////////////////////////////////////
+    
     public static final Light daylight() {
         return new Light(1, 0.45f, 1, new Vector3f(-10, 30, 7.5f), Color.WHITE);
     }
     
     public static final Light sunset() {
-        return new Light(0.87f, 0.5f, 1, new Vector3f(-8, 7.5f, -30), Color.create(173, 141, 162), Color.create(255, 204, 86), Color.WHITE);
+        return new Light(0.87f, 0.5f, 1, new Vector3f(-8, 7.5f, -30), Color.create(173, 141, 162), Color.create(255, 204, 86), Color.create(255, 234, 184));
     }
     
     public static final Light midnight() {
-        return new Light(0.82f, 0.55f, 1, new Vector3f(6.5f, 16.7f, 30), Color.create(38, 48, 76), Color.create(48, 62, 80), Color.WHITE);
+        return new Light(0.82f, 0.55f, 1, new Vector3f(6.5f, 16.7f, 30), Color.create(38, 48, 76), Color.create(48, 62, 80), Color.create(188, 209, 231));
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //POINT LIGHTS:
+    ////////////////////////////////////////////////////////////////////////////
+    
+    public static final Light beacon() {
+        return new Light(3f, 1f, 1.25f, new Vector3f(2, 1, 0), Color.RED);
     }
     
 }
