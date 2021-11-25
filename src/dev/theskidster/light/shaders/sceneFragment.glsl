@@ -76,8 +76,8 @@ vec3 calcWorldLight(Light light, vec3 normal) {
     float shadow         = calcShadow(dotLightNormal);
     
     vec3 lighting = (uShine != 0) 
-                  ? (diffuse + ambient + specular) * ioColor 
-                  : (diffuse + ambient) * ioColor;
+                  ? (shadow * diffuse + ambient + specular) * ioColor 
+                  : (shadow * diffuse + ambient) * ioColor;
     
     return lighting;
 }
