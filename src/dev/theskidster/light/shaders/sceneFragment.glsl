@@ -74,7 +74,10 @@ vec3 calcWorldLight(Light light, vec3 normal) {
     
     float dotLightNormal = dot(lightDir, normal);
     float shadow         = calcShadow(dotLightNormal);
-    vec3 lighting        = (shadow * diffuse + ambient + specular) * ioColor;
+    
+    vec3 lighting = (uShine != 0) 
+                  ? (diffuse + ambient + specular) * ioColor 
+                  : (diffuse + ambient) * ioColor;
     
     return lighting;
 }
@@ -99,9 +102,9 @@ vec3 calcPointLight(Light light, vec3 normal, vec3 fragPos) {
     float spec      = pow(max(dot(cameraDir, reflectDir), 0), uShine);
     vec3 specular   = spec * light.specular;
     
-    vec3 lighting = (diffuse + ambient + specular) * ioColor;
-    
-    vec3 camPos = uCamPos;
+    vec3 lighting = (uShine != 0) 
+                  ? (diffuse + ambient + specular) * ioColor 
+                  : (diffuse + ambient) * ioColor;
     
     return lighting;
 }

@@ -36,7 +36,7 @@ public class EntityTeapot extends Entity {
 
     @Override
     public void render(GLProgram sceneProgram, int shadowMapTexHandle) {
-        model.render(sceneProgram, shadowMapTexHandle, 32);
+        model.render(sceneProgram, shadowMapTexHandle, 0);
     }
 
     @Override
