@@ -149,16 +149,15 @@ public final class App {
         
         { //Establish framebuffer texture.
             fbo = glGenFramebuffers();
-            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, viewport.texHandle, 0);
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, viewport.texHandle, 0);
+            
             int rbo = glGenRenderbuffers();
             glBindRenderbuffer(GL_RENDERBUFFER, rbo);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, window.getWidth(), window.getHeight());
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
-                
+            
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             checkFBStatus(GL_FRAMEBUFFER);
@@ -242,6 +241,8 @@ public final class App {
                 font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
                 font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
             }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             sceneProgram.use();
             sceneProgram.setUniform("uProjection", false, projMatrix);
