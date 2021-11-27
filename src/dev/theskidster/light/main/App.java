@@ -38,16 +38,8 @@ public final class App {
     private final Font font;
     private final Background background;
     private final ShadowMap shadowMap;
+    private final Viewport viewport; //TODO: initialize this.
     private static Scene scene;
-    
-    /*
-    TODO:
-    Add the follwing features to XJGE:
-    
-    - 
-    - 
-    
-    */
     
     App() {
         if(!glfwInit()) {

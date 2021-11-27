@@ -43,5 +43,10 @@ void main() {
             ioLightFrag = uLightSpace * vec4(ioFragPos, 1);
             gl_Position = uProjection * uView * uModel * vec4(aPosition, 1);
             break;
+        
+        case 4: //Used for the viewport framebuffer.
+            ioTexCoords = aTexCoords;
+            gl_Position = uProjection * vec4(aPosition, 1);
+            break;
     }
 }

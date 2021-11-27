@@ -134,5 +134,9 @@ void main() {
             
             ioResult = texture(uTexture, ioTexCoords) * vec4(lighting2 * ioColor, 1);
             break;
+        
+        case 4: //Used for the viewport framebuffer.
+            ioResult = texture(uTexture, ioTexCoords);
+            break;
     }
 }
