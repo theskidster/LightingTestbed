@@ -1,6 +1,7 @@
 #version 330 core
 
 layout (location = 0) in vec3 aPosition;
+layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoords;
 layout (location = 3) in vec3 aNormal;
 
@@ -47,6 +48,11 @@ void main() {
         case 4: //Used for the viewport framebuffer.
             ioTexCoords = aTexCoords;
             gl_Position = uProjection * vec4(aPosition, 1);
+            break;
+        
+        case 5: //Used for rendering the bloom test entity.
+            ioColor     = aColor;
+            gl_Position = uProjection * uView * uModel * vec4(aPosition, 1);
             break;
     }
 }

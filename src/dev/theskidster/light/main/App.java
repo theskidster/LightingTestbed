@@ -211,7 +211,7 @@ public final class App {
             
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glViewport(0, 0, window.getWidth(), window.getHeight());
-            glClearColor(1, 0, 0, 0);
+            //glClearColor(1, 0, 0, 0);
             glDrawBuffer(GL_COLOR_ATTACHMENT0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             

@@ -138,5 +138,9 @@ void main() {
         case 4: //Used for the viewport framebuffer.
             ioResult = texture(uTexture, ioTexCoords);
             break;
+        
+        case 5: //Used for rendering the bloom test entity.
+            ioResult = vec4(ioColor, 1);
+            break;
     }
 }

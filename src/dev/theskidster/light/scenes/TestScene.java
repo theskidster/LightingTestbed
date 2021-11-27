@@ -1,5 +1,6 @@
 package dev.theskidster.light.scenes;
 
+import dev.theskidster.light.entity.EntityBloom;
 import dev.theskidster.light.entity.EntityCube;
 import dev.theskidster.light.entity.EntityPlane;
 import dev.theskidster.light.entity.EntityTeapot;
@@ -33,6 +34,7 @@ public class TestScene extends Scene {
         entities.put("plane", new EntityPlane(0, -2, 0, Color.SILVER, 50, 50));
         entities.put("cube", cube);
         entities.put("teapot", new EntityTeapot(10, 2.5f, 0));
+        entities.put("bloom", new EntityBloom(0, 3, 0, Color.WHITE, 1));
         
         addLight(pointLight);
         addLightAtIndex(0, Light.midnight());
