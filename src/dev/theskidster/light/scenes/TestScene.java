@@ -37,7 +37,7 @@ public class TestScene extends Scene {
         entities.put("bloom", new EntityBloom(0, 3, 0, Color.WHITE, 1));
         
         addLight(pointLight);
-        addLightAtIndex(0, Light.midnight());
+        addLightAtIndex(0, Light.daylight());
     }
     
     @Override

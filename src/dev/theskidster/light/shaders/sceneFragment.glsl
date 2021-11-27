@@ -27,7 +27,8 @@ uniform sampler2D uTexture;
 uniform sampler2D uShadowMap;
 uniform Light uLights[MAX_LIGHTS];
 
-out vec4 ioResult;
+layout (location = 0) out vec4 ioFragColor;
+layout (location = 1) out vec4 ioBrightColor;
 
 float calcShadow(float dotLightNormal) {
     vec3 pos = ioLightFrag.xyz * 0.5 + 0.5;
@@ -118,11 +119,11 @@ void main() {
                 lighting += calcPointLight(uLights[i], normalize(ioNormal), ioFragPos);
             }
             
-            ioResult = vec4(lighting * ioColor, 1);
+            ioFragColor = vec4(lighting * ioColor, 1);
             break;
         
         case 2: //Used to render light source icons.
-            ioResult = texture(uTexture, ioTexCoords) * vec4(ioColor, texture(uTexture, ioTexCoords).a);
+            ioFragColor = texture(uTexture, ioTexCoords) * vec4(ioColor, texture(uTexture, ioTexCoords).a);
             break;
         
         case 3: //Used to render 3D models.
@@ -132,15 +133,25 @@ void main() {
                 lighting2 += calcPointLight(uLights[i], normalize(ioNormal), ioFragPos);
             }
             
-            ioResult = texture(uTexture, ioTexCoords) * vec4(lighting2 * ioColor, 1);
+            ioFragColor = texture(uTexture, ioTexCoords) * vec4(lighting2 * ioColor, 1);
             break;
         
         case 4: //Used for the viewport framebuffer.
-            ioResult = texture(uTexture, ioTexCoords);
+            ioFragColor = texture(uTexture, ioTexCoords);
+            
+            
             break;
         
         case 5: //Used for rendering the bloom test entity.
-            ioResult = vec4(ioColor, 1);
+            ioFragColor = vec4(ioColor, 1);
             break;
+    }
+    
+    float brightness = dot(ioFragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+        
+    if(brightness > 1.0) {
+        ioBrightColor = vec4(ioFragColor.rgb, 1);
+    } else {
+        ioBrightColor = vec4(0, 0, 0, 1);
     }
 }

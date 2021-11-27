@@ -55,9 +55,9 @@ class Viewport {
         glEnableVertexAttribArray(2);
     }
     
-    void render(GLProgram sceneProgram) {
+    void render(GLProgram sceneProgram, int handle) {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texHandle);
+        glBindTexture(GL_TEXTURE_2D, handle);
         glBindVertexArray(g.vao);
         
         sceneProgram.setUniform("uType", 4);

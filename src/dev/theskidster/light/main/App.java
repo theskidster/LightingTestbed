@@ -41,6 +41,7 @@ public final class App {
     private final Background background;
     private final ShadowMap shadowMap;
     private final Viewport viewport;
+    private final BloomTexture bloomTexture;
     private static Scene scene;
     
     App() {
@@ -139,11 +140,12 @@ public final class App {
             depthProgram.addUniform(BufferType.MAT4, "uLightSpace");
         }
         
-        camera     = new Camera();
-        font       = new Font("fnt_debug_mono.ttf", 12);
-        background = new Background(0, window.getHeight() - 130, 300, 130);
-        shadowMap  = new ShadowMap();
-        viewport   = new Viewport(window.getWidth(), window.getHeight());
+        camera       = new Camera();
+        font         = new Font("fnt_debug_mono.ttf", 12);
+        background   = new Background(0, window.getHeight() - 130, 300, 130);
+        shadowMap    = new ShadowMap();
+        viewport     = new Viewport(window.getWidth(), window.getHeight());
+        bloomTexture = new BloomTexture(window.getWidth(), window.getHeight());
         
         Scene.setCameraReference(camera);
         
@@ -152,6 +154,7 @@ public final class App {
             
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, viewport.texHandle, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomTexture.handle, 0);
             
             int rbo = glGenRenderbuffers();
             glBindRenderbuffer(GL_RENDERBUFFER, rbo);
@@ -176,6 +179,8 @@ public final class App {
         double delta = 0;
         double deltaMetric = 0;
         boolean ticked;
+        
+        int[] attachments = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
         
         Matrix4f projMatrix = new Matrix4f();
         projMatrix.setOrtho(window.getWidth(), 0, 0, window.getHeight(), 0, 1);
@@ -212,7 +217,7 @@ public final class App {
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glViewport(0, 0, window.getWidth(), window.getHeight());
             //glClearColor(1, 0, 0, 0);
-            glDrawBuffer(GL_COLOR_ATTACHMENT0);
+            glDrawBuffers(attachments);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
             //Render Scene.
@@ -246,7 +251,7 @@ public final class App {
             
             sceneProgram.use();
             sceneProgram.setUniform("uProjection", false, projMatrix);
-            viewport.render(sceneProgram);
+            viewport.render(sceneProgram, bloomTexture.handle);
             
             glfwSwapBuffers(Window.handle);
             
