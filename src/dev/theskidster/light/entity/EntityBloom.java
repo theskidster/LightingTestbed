@@ -4,15 +4,7 @@ import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.graphics.Graphics;
 import dev.theskidster.light.main.App;
 import dev.theskidster.shadercore.GLProgram;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.system.MemoryStack;
 
 /**
@@ -36,9 +28,9 @@ public class EntityBloom extends Entity {
             g.vertices = stack.mallocFloat(24);
             
             //(vec3 position), (vec3 color)
-            g.vertices.put(-(size / 2)).put(-(size / 2)).put(0)   .put(color.r).put(color.g).put(color.b);
-            g.vertices.put(0)          .put(size / 2)   .put(0)   .put(color.r).put(color.g).put(color.b);
-            g.vertices.put(size / 2)   .put(-(size / 2)).put(0)   .put(color.r).put(color.g).put(color.b);
+            g.vertices.put(-(size / 2)).put(-(size / 2)).put(0)   .put(color.r + 1).put(color.g + 1).put(color.b + 1);
+            g.vertices.put(0)          .put(size / 2)   .put(0)   .put(color.r + 1).put(color.g + 1).put(color.b + 1);
+            g.vertices.put(size / 2)   .put(-(size / 2)).put(0)   .put(color.r + 1).put(color.g + 1).put(color.b + 1);
             
             g.vertices.flip();
         }

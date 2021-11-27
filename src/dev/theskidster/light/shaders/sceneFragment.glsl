@@ -148,10 +148,5 @@ void main() {
     }
     
     float brightness = dot(ioFragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-        
-    if(brightness > 1.0) {
-        ioBrightColor = vec4(ioFragColor.rgb, 1);
-    } else {
-        ioBrightColor = vec4(0, 0, 0, 1);
-    }
+    ioBrightColor    = (brightness > 1.0) ? vec4(ioFragColor.rgb, 1) : vec4(0, 0, 0, 1);
 }
