@@ -9,9 +9,10 @@ import dev.theskidster.shadercore.GLProgram;
 import dev.theskidster.shadercore.Shader;
 import dev.theskidster.shadercore.ShaderCore;
 import java.util.LinkedList;
+import org.joml.Matrix4f;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.opengl.GL;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 
 /**
  * Nov 17, 2021
@@ -24,6 +25,7 @@ import static org.lwjgl.opengl.GL20.*;
 public final class App {
 
     private static int tickCount = 0;
+    private final int fbo;
     
     private static boolean vSync = true;
     
@@ -38,7 +40,7 @@ public final class App {
     private final Font font;
     private final Background background;
     private final ShadowMap shadowMap;
-    private final Viewport viewport; //TODO: initialize this.
+    private final Viewport viewport;
     private static Scene scene;
     
     App() {
@@ -141,8 +143,26 @@ public final class App {
         font       = new Font("fnt_debug_mono.ttf", 12);
         background = new Background(0, window.getHeight() - 130, 300, 130);
         shadowMap  = new ShadowMap();
+        viewport   = new Viewport(window.getWidth(), window.getHeight());
         
         Scene.setCameraReference(camera);
+        
+        { //Establish framebuffer texture.
+            fbo = glGenFramebuffers();
+            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+            
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, viewport.texHandle, 0);
+            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+            int rbo = glGenRenderbuffers();
+            glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, window.getWidth(), window.getHeight());
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+                
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            checkFBStatus(GL_FRAMEBUFFER);
+        }
     }
     
     void start() {
@@ -157,6 +177,9 @@ public final class App {
         double delta = 0;
         double deltaMetric = 0;
         boolean ticked;
+        
+        Matrix4f projMatrix = new Matrix4f();
+        projMatrix.setOrtho(window.getWidth(), 0, 0, window.getHeight(), 0, 1);
         
         while(!glfwWindowShouldClose(Window.handle)) {
             currTime = glfwGetTime();
@@ -187,7 +210,10 @@ public final class App {
             
             shadowMap.generate(scene, depthProgram, camera.up);
             
+            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glViewport(0, 0, window.getWidth(), window.getHeight());
+            glClearColor(1, 0, 0, 0);
+            glDrawBuffer(GL_COLOR_ATTACHMENT0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
             //Render Scene.
@@ -216,6 +242,10 @@ public final class App {
                 font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
                 font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
             }
+            
+            sceneProgram.use();
+            sceneProgram.setUniform("uProjection", false, projMatrix);
+            viewport.render(sceneProgram);
             
             glfwSwapBuffers(Window.handle);
             
@@ -258,6 +288,26 @@ public final class App {
             }
             
             JLogger.logSevere("OpenGL Error: (" + glError + ") " + desc, null);
+        }
+    }
+    
+    void checkFBStatus(int target) {
+        int status  = glCheckFramebufferStatus(target);
+        String desc = "";
+        
+        if(status != GL_FRAMEBUFFER_COMPLETE) {
+            switch(status) {
+                case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT         -> desc = "incomplete attachment";
+                case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT -> desc = "missing attachment";
+                case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER        -> desc = "incomplete draw buffer";
+                case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER        -> desc = "incomplete read buffer";
+                case GL_FRAMEBUFFER_UNSUPPORTED                   -> desc = "unsupported";
+                case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE        -> desc = "incomplete multisample";
+                case GL_FRAMEBUFFER_UNDEFINED                     -> desc = "undefined";
+            }
+            
+            JLogger.setModule("core");
+            JLogger.logSevere("Framebuffer Error: (" + status + ") " + desc, null);
         }
     }
     
