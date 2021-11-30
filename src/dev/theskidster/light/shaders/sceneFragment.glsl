@@ -138,8 +138,6 @@ void main() {
         
         case 4: //Used for the viewport framebuffer.
             ioFragColor = texture(uTexture, ioTexCoords);
-            
-            
             break;
         
         case 5: //Used for rendering the bloom test entity.
