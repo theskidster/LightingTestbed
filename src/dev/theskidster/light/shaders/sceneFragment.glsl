@@ -26,7 +26,7 @@ uniform float uWeight[5] = float[] (0.2270270270, 0.1945945946, 0.1216216216, 0.
 uniform vec3 uCamPos;
 uniform sampler2D uTexture;
 uniform sampler2D uShadowMap;
-//uniform sampler2D uBloomTexture;
+uniform sampler2D uBloomTexture;
 uniform Light uLights[MAX_LIGHTS];
 
 layout (location = 0) out vec4 ioFragColor;
@@ -139,14 +139,16 @@ void main() {
             break;
         
         case 4: //Used for the viewport framebuffer.
-            vec2 texOffset = 1.0 / textureSize(uTexture, 0);
-            vec3 result    = texture(uTexture, ioTexCoords).rgb * uWeight[0];
+            vec2 texOffset = 6.0 / textureSize(uBloomTexture, 0);
+            vec3 result    = texture(uBloomTexture, ioTexCoords).rgb * uWeight[0];
 
             for(int i = 1; i < 5; ++i) {
-                result += texture(uTexture, ioTexCoords + vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
-                result += texture(uTexture, ioTexCoords - vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
+                result += texture(uBloomTexture, ioTexCoords + vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
+                result += texture(uBloomTexture, ioTexCoords - vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
             }
 
+            result += texture(uTexture, ioTexCoords).rgb;
+            
             ioFragColor = vec4(result, 1.0);
             break;
         
@@ -155,10 +157,6 @@ void main() {
             break;
     }
     
-    if(uType == 4) {
-        
-    } else {
-        float brightness = dot(ioFragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-        ioBrightColor    = (brightness > 1.0) ? vec4(ioFragColor.rgb, 1) : vec4(0, 0, 0, 1);
-    }
+    float brightness = dot(ioFragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    ioBrightColor    = (brightness > 1.0) ? vec4(ioFragColor.rgb, 1) : vec4(0, 0, 0, 1);
 }

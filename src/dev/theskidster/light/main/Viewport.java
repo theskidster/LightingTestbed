@@ -57,11 +57,14 @@ class Viewport {
     
     void render(GLProgram sceneProgram, int handle) {
         glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texHandle);
+        glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, handle);
         glBindVertexArray(g.vao);
         
         sceneProgram.setUniform("uType", 4);
         sceneProgram.setUniform("uTexture", 0);
+        sceneProgram.setUniform("uBloomTexture", 2);
 
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
         

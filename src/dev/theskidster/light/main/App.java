@@ -104,6 +104,7 @@ public final class App {
             sceneProgram.addUniform(BufferType.INT,  "uNumLights");
             sceneProgram.addUniform(BufferType.INT,  "uTexture");
             sceneProgram.addUniform(BufferType.INT,  "uShadowMap");
+            sceneProgram.addUniform(BufferType.INT,  "uBloomTexture");
             sceneProgram.addUniform(BufferType.INT,  "uPCFValue");
             sceneProgram.addUniform(BufferType.INT,  "uShine");
             sceneProgram.addUniform(BufferType.FLOAT, "uWeight");
