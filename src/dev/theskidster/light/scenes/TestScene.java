@@ -36,14 +36,14 @@ public class TestScene extends Scene {
         entities.put("teapot", new EntityTeapot(10, 2.5f, 0));
         entities.put("bloom", new EntityBloom(0, 3, 0, Color.WHITE, 1));
         
-        addLight(pointLight);
+        //addLight(pointLight);
         addLightAtIndex(0, Light.midnight());
     }
     
     @Override
     public void update() {
-        cube.angleY += 0.5f;
-        cube.angleZ += 0.5f;
+        cube.angleY += 0.015f;
+        cube.angleZ += 0.015f;
         
         entities.values().forEach(entity -> entity.update());
     }
