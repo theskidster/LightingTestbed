@@ -106,6 +106,7 @@ public final class App {
             sceneProgram.addUniform(BufferType.INT,  "uShadowMap");
             sceneProgram.addUniform(BufferType.INT,  "uPCFValue");
             sceneProgram.addUniform(BufferType.INT,  "uShine");
+            sceneProgram.addUniform(BufferType.FLOAT, "uWeight");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
             sceneProgram.addUniform(BufferType.VEC3, "uColor");
             sceneProgram.addUniform(BufferType.VEC3, "uCamPos");
@@ -261,10 +262,7 @@ public final class App {
                 font.drawString("VSYNC: " + vSync, 12, window.getHeight() - 80, Color.YELLOW, hudProgram);
                 font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
                 font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
-            }
-            
-            
-            
+            }            
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             sceneProgram.use();
