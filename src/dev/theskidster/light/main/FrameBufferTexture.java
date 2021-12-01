@@ -13,18 +13,20 @@ import org.lwjgl.system.MemoryStack;
  * @author J Hoffman
  * @since  
  */
-class Viewport {
+class FrameBufferTexture {
 
     final int texHandle;
     final Graphics g;
     
-    Viewport(int width, int height) {
+    FrameBufferTexture(int width, int height) {
         texHandle = glGenTextures();
         
         glBindTexture(GL_TEXTURE_2D, texHandle);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glBindTexture(GL_TEXTURE_2D, 0);
         
         g = new Graphics();
@@ -65,6 +67,19 @@ class Viewport {
         sceneProgram.setUniform("uType", 4);
         sceneProgram.setUniform("uTexture", 0);
         sceneProgram.setUniform("uBloomTexture", 2);
+
+        glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
+        
+        App.checkGLError();
+    }
+    
+    void render(GLProgram blurProgram) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texHandle);
+        glBindVertexArray(g.vao);
+        
+        blurProgram.setUniform("uTexture", 0);
+        blurProgram.setUniform("uHorizontal", 1);
 
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
         

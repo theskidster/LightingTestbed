@@ -146,9 +146,13 @@ void main() {
                 result += texture(uBloomTexture, ioTexCoords + vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
                 result += texture(uBloomTexture, ioTexCoords - vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
             }
+            
+            for(int i = 1; i < 5; ++i) {
+                result += texture(uBloomTexture, ioTexCoords + vec2(0.0, texOffset.y * i)).rgb * uWeight[i];
+                result += texture(uBloomTexture, ioTexCoords - vec2(0.0, texOffset.y * i)).rgb * uWeight[i];
+            }
 
             result += texture(uTexture, ioTexCoords).rgb;
-            
             ioFragColor = vec4(result, 1.0);
             break;
         

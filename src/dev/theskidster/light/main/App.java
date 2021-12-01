@@ -37,12 +37,11 @@ public final class App {
     private final GLProgram hudProgram;
     private final GLProgram sceneProgram;
     private final GLProgram depthProgram;
-    private final GLProgram blurProgram;
     private final Font font;
     private final Background background;
     private final ShadowMap shadowMap;
-    private final Viewport viewport;
-    private final BloomTexture bloomTexture;
+    private final FrameBufferTexture viewport;
+    private final FrameBufferTexture bloomTex;
     private static Scene scene;
     
     App() {
@@ -143,27 +142,12 @@ public final class App {
             depthProgram.addUniform(BufferType.MAT4, "uLightSpace");
         }
         
-        //Create shader program for applying a gaussian blur to frambuffer textures.
-        {
-            var shaderSourceFiles = new LinkedList<Shader>() {{
-                add(new Shader("blurVertex.glsl", GL_VERTEX_SHADER));
-                add(new Shader("blurFragment.glsl", GL_FRAGMENT_SHADER));
-            }};
-            
-            blurProgram = new GLProgram(shaderSourceFiles, "blur");
-            
-            blurProgram.use();
-            blurProgram.addUniform(BufferType.INT, "uHorizontal");
-            blurProgram.addUniform(BufferType.INT, "uTexture");
-            blurProgram.addUniform(BufferType.FLOAT, "uWeight");
-        }
-        
         camera       = new Camera();
         font         = new Font("fnt_debug_mono.ttf", 12);
         background   = new Background(0, window.getHeight() - 130, 300, 130);
         shadowMap    = new ShadowMap();
-        viewport     = new Viewport(window.getWidth(), window.getHeight());
-        bloomTexture = new BloomTexture(window.getWidth(), window.getHeight());
+        viewport     = new FrameBufferTexture(window.getWidth(), window.getHeight());
+        bloomTex     = new FrameBufferTexture(window.getWidth(), window.getHeight());
         
         Scene.setCameraReference(camera);
         
@@ -172,7 +156,7 @@ public final class App {
             
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, viewport.texHandle, 0);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomTexture.handle, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomTex.texHandle, 0);
             
             int rbo = glGenRenderbuffers();
             glBindRenderbuffer(GL_RENDERBUFFER, rbo);
@@ -268,7 +252,7 @@ public final class App {
             
             sceneProgram.use();
             sceneProgram.setUniform("uProjection", false, projMatrix);
-            viewport.render(sceneProgram, bloomTexture.handle);
+            viewport.render(sceneProgram, bloomTex.texHandle);
             
             glfwSwapBuffers(Window.handle);
             
