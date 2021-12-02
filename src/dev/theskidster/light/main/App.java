@@ -27,6 +27,9 @@ public final class App {
     private static int tickCount = 0;
     private final int fbo;
     
+    private final int[] fbos = new int[2];
+    private final int[] textures = new int[2];
+    
     private static boolean vSync = true;
     
     public static final String ASSETS_PATH = "/dev/theskidster/light/assets/";
@@ -183,6 +186,24 @@ public final class App {
             
             checkFBStatus(GL_FRAMEBUFFER);
         }
+        
+        glGenFramebuffers(fbos);
+        glGenTextures(textures);
+        
+        for(int i = 0; i < 2; i++) {
+            glBindFramebuffer(GL_FRAMEBUFFER, fbos[i]);
+            glBindTexture(GL_TEXTURE_2D, textures[i]);
+            
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, window.getWidth(), window.getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textures[i], 0);
+            
+            checkFBStatus(GL_FRAMEBUFFER);
+        }
     }
     
     void start() {
@@ -269,7 +290,7 @@ public final class App {
             /*
             sceneProgram.use();
             sceneProgram.setUniform("uProjection", false, projMatrix);
-            viewport.render(sceneProgram, bloomTex.texHandle);
+            viewport.render(sceneProgram, viewport.texHandle, bloomTex.texHandle);
             */
             
             blurProgram.use();
