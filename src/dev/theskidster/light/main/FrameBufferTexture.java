@@ -78,8 +78,8 @@ class FrameBufferTexture {
         glBindTexture(GL_TEXTURE_2D, texHandle);
         glBindVertexArray(g.vao);
         
-        blurProgram.setUniform("uTexture", 0);
-        blurProgram.setUniform("uHorizontal", 1);
+        blurProgram.setUniform("uBloomTexture", 0);
+        //blurProgram.setUniform("uHorizontal", 1);
 
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);
         

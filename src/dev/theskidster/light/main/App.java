@@ -37,6 +37,7 @@ public final class App {
     private final GLProgram hudProgram;
     private final GLProgram sceneProgram;
     private final GLProgram depthProgram;
+    private final GLProgram blurProgram;
     private final Font font;
     private final Background background;
     private final ShadowMap shadowMap;
@@ -140,6 +141,21 @@ public final class App {
             depthProgram.addUniform(BufferType.INT, "uTexture");
             depthProgram.addUniform(BufferType.MAT4, "uModel");
             depthProgram.addUniform(BufferType.MAT4, "uLightSpace");
+        }
+        
+        //Create shader program for applying gaussian blur.
+        {
+            var shaderSourceFiles = new LinkedList<Shader>() {{
+                add(new Shader("blurVertex.glsl", GL_VERTEX_SHADER));
+                add(new Shader("blurFragment.glsl", GL_FRAGMENT_SHADER));
+            }};
+            
+            blurProgram = new GLProgram(shaderSourceFiles, "blur");
+            
+            blurProgram.use();
+            blurProgram.addUniform(BufferType.INT,   "uBloomTexture");
+            blurProgram.addUniform(BufferType.FLOAT, "uWeight");
+            blurProgram.addUniform(BufferType.MAT4,  "uProjection");
         }
         
         camera       = new Camera();
@@ -250,9 +266,15 @@ public final class App {
             }            
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
+            /*
             sceneProgram.use();
             sceneProgram.setUniform("uProjection", false, projMatrix);
             viewport.render(sceneProgram, bloomTex.texHandle);
+            */
+            
+            blurProgram.use();
+            blurProgram.setUniform("uProjection", false, projMatrix);
+            bloomTex.render(blurProgram);
             
             glfwSwapBuffers(Window.handle);
             
