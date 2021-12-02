@@ -77,6 +77,12 @@ class FrameBufferTexture {
         glBindTexture(GL_TEXTURE_2D, handle);
         glBindVertexArray(g.vao);
         
+        /*
+        TODO:
+        textured objects like light source icons will cancel out the bloom
+        effect- this can likely be solved with a simple alpha test.
+        */
+        
         blurProgram.setUniform("uHorizontal", (horizontal) ? 1 : 0);
 
         glDrawElements(GL_TRIANGLES, g.indices.capacity(), GL_UNSIGNED_INT, 0);

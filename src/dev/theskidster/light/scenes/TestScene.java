@@ -28,7 +28,7 @@ public class TestScene extends Scene {
     public TestScene() {
         super("test");
         
-        setCameraPosition(12, 12, 18);
+        setCameraPosition(12, 8, 18);
         setCameraDirection(-120, 20);
         
         entities.put("plane", new EntityPlane(0, -2, 0, Color.SILVER, 50, 50));
@@ -36,8 +36,8 @@ public class TestScene extends Scene {
         entities.put("teapot", new EntityTeapot(10, 2.5f, 0));
         entities.put("bloom", new EntityBloom(0, 3, 0, Color.WHITE, 1));
         
-        //addLight(pointLight);
-        addLightAtIndex(0, Light.daylight());
+        addLight(pointLight);
+        addLightAtIndex(0, Light.midnight());
     }
     
     @Override

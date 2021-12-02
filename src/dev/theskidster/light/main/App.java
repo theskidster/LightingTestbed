@@ -285,7 +285,7 @@ public final class App {
                 font.drawString("VSYNC: " + vSync, 12, window.getHeight() - 80, Color.YELLOW, hudProgram);
                 font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
                 font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
-            }            
+            }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             blurProgram.use();
@@ -293,13 +293,14 @@ public final class App {
             
             boolean firstPass  = true;
             boolean horizontal = true;
-            int blurWeight = 5;
+            int blurWeight = 10;
             
             for(int i = 0; i < blurWeight; i++) {
                 int value     = (horizontal) ? 1 : 0;
+                int invValue  = (horizontal) ? 0 : 1;
                 int texHandle = bloomTex.texHandle;
                 
-                glBindFramebuffer(GL_FRAMEBUFFER, fbos[value]);
+                glBindFramebuffer(GL_FRAMEBUFFER, fbos[invValue]);
                 bloomTex.render(blurProgram, (firstPass) ? texHandle : textures[value], horizontal);
                 
                 horizontal = !horizontal;

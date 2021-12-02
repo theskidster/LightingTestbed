@@ -138,7 +138,10 @@ void main() {
             break;
         
         case 4: //Used for the viewport framebuffer.
-            ioFragColor = texture(uBloomTexture, ioTexCoords);
+            vec3 sceneColor = texture(uTexture, ioTexCoords).rgb;
+            sceneColor += texture(uBloomTexture, ioTexCoords).rgb;
+            
+            ioFragColor = vec4(sceneColor, 1);
             break;
         
         case 5: //Used for rendering the bloom test entity.
