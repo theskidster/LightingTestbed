@@ -4,6 +4,7 @@ import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.scene.Scene;
 import dev.theskidster.light.scenes.TestScene;
 import dev.theskidster.jlogger.JLogger;
+import dev.theskidster.light.graphics.Texture;
 import dev.theskidster.shadercore.BufferType;
 import dev.theskidster.shadercore.GLProgram;
 import dev.theskidster.shadercore.Shader;
@@ -287,23 +288,23 @@ public final class App {
             }            
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
-            /*
-            sceneProgram.use();
-            sceneProgram.setUniform("uProjection", false, projMatrix);
-            viewport.render(sceneProgram, viewport.texHandle, bloomTex.texHandle);
-            */
-            
             blurProgram.use();
             blurProgram.setUniform("uProjection", false, projMatrix);
             
-            glBindFramebuffer(GL_FRAMEBUFFER, fbos[0]);
-            bloomTex.render(blurProgram, bloomTex.texHandle, true);
+            boolean firstPass  = true;
+            boolean horizontal = true;
+            int blurWeight = 5;
             
-            glBindFramebuffer(GL_FRAMEBUFFER, fbos[1]);
-            bloomTex.render(blurProgram, textures[0], false);
-            
-            glBindFramebuffer(GL_FRAMEBUFFER, fbos[0]);
-            bloomTex.render(blurProgram, textures[1], true);
+            for(int i = 0; i < blurWeight; i++) {
+                int value     = (horizontal) ? 1 : 0;
+                int texHandle = bloomTex.texHandle;
+                
+                glBindFramebuffer(GL_FRAMEBUFFER, fbos[value]);
+                bloomTex.render(blurProgram, (firstPass) ? texHandle : textures[value], horizontal);
+                
+                horizontal = !horizontal;
+                if(firstPass) firstPass = false;
+            }
             
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
