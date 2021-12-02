@@ -157,6 +157,7 @@ public final class App {
             
             blurProgram.use();
             blurProgram.addUniform(BufferType.INT,   "uBloomTexture");
+            blurProgram.addUniform(BufferType.INT,   "uHorizontal");
             blurProgram.addUniform(BufferType.FLOAT, "uWeight");
             blurProgram.addUniform(BufferType.MAT4,  "uProjection");
         }
