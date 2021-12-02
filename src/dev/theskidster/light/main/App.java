@@ -110,7 +110,6 @@ public final class App {
             sceneProgram.addUniform(BufferType.INT,  "uBloomTexture");
             sceneProgram.addUniform(BufferType.INT,  "uPCFValue");
             sceneProgram.addUniform(BufferType.INT,  "uShine");
-            sceneProgram.addUniform(BufferType.FLOAT, "uWeight");
             sceneProgram.addUniform(BufferType.VEC2, "uTexCoords");
             sceneProgram.addUniform(BufferType.VEC3, "uColor");
             sceneProgram.addUniform(BufferType.VEC3, "uCamPos");
@@ -183,9 +182,11 @@ public final class App {
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, window.getWidth(), window.getHeight());
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
             
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            int[] attachments = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+            glDrawBuffers(attachments);
             
             checkFBStatus(GL_FRAMEBUFFER);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
         
         glGenFramebuffers(fbos);
@@ -204,6 +205,7 @@ public final class App {
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textures[i], 0);
             
             checkFBStatus(GL_FRAMEBUFFER);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
     }
     
@@ -219,8 +221,6 @@ public final class App {
         double delta = 0;
         double deltaMetric = 0;
         boolean ticked;
-        
-        int[] attachments = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
         
         Matrix4f projMatrix = new Matrix4f();
         projMatrix.setOrtho(window.getWidth(), 0, 0, window.getHeight(), 0, 1);
@@ -257,7 +257,6 @@ public final class App {
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glViewport(0, 0, window.getWidth(), window.getHeight());
             //glClearColor(1, 0, 0, 0);
-            glDrawBuffers(attachments);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
             //Render Scene.
@@ -296,7 +295,21 @@ public final class App {
             
             blurProgram.use();
             blurProgram.setUniform("uProjection", false, projMatrix);
-            bloomTex.render(blurProgram);
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, fbos[0]);
+            bloomTex.render(blurProgram, bloomTex.texHandle, true);
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, fbos[1]);
+            bloomTex.render(blurProgram, textures[0], false);
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, fbos[0]);
+            bloomTex.render(blurProgram, textures[1], true);
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            sceneProgram.use();
+            sceneProgram.setUniform("uProjection", false, projMatrix);
+            viewport.render(sceneProgram, viewport.texHandle, textures[1]);
             
             glfwSwapBuffers(Window.handle);
             

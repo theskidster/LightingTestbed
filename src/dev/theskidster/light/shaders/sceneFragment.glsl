@@ -22,7 +22,6 @@ uniform int uType;
 uniform int uNumLights;
 uniform int uPCFValue;
 uniform int uShine;
-uniform float uWeight[5] = float[] (0.2270270270, 0.1945945946, 0.1216216216, 0.0540540541, 0.0162162162);
 uniform vec3 uCamPos;
 uniform sampler2D uTexture;
 uniform sampler2D uShadowMap;
@@ -139,21 +138,7 @@ void main() {
             break;
         
         case 4: //Used for the viewport framebuffer.
-            vec2 texOffset = 6.0 / textureSize(uBloomTexture, 0);
-            vec3 result    = texture(uBloomTexture, ioTexCoords).rgb * uWeight[0];
-
-            for(int i = 1; i < 5; ++i) {
-                result += texture(uBloomTexture, ioTexCoords + vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
-                result += texture(uBloomTexture, ioTexCoords - vec2(texOffset.x * i, 0.0)).rgb * uWeight[i];
-            }
-            
-            for(int i = 1; i < 5; ++i) {
-                result += texture(uBloomTexture, ioTexCoords + vec2(0.0, texOffset.y * i)).rgb * uWeight[i];
-                result += texture(uBloomTexture, ioTexCoords - vec2(0.0, texOffset.y * i)).rgb * uWeight[i];
-            }
-
-            result += texture(uTexture, ioTexCoords).rgb;
-            ioFragColor = vec4(result, 1.0);
+            ioFragColor = texture(uBloomTexture, ioTexCoords);
             break;
         
         case 5: //Used for rendering the bloom test entity.
