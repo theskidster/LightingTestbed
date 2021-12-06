@@ -34,6 +34,58 @@ public class ShadowMap {
     
     final Matrix4f lightSpace = new Matrix4f();
     
+    /*
+    FEATURES:
+
+    - - - - - - - - - - -
+
+    BIAS VALUES:
+    shadow bias is a value used to offset the perceived depth of objects to
+    mitigate shadow acne and peter panning. the user will provide two values
+    a minimum permitted bias value, and a maximum permitted bias value.
+
+    double minBias;
+    double maxBias;
+
+    - - - - - - - - - - -
+
+    FILTER:
+    the constructor of the ShadowMap will be used to define what type of 
+    filtering to apply to the texture object (nearest or linear) much in 
+    the same way Skyboxes do.
+
+    - - - - - - - - - - -
+
+    ENTITIES:
+    entity objects now have a renderShadow() method that will be provided to 
+    the implementation to define how entites shadows should be rendered if 
+    at all.
+
+    - - - - - - - - - - -
+
+    ORTHO VALUES:
+    might be useful to alter the shape of the shadow map- so we'll let users
+    alter the values passed to the light projection matrix. (NEAR_PLANE, 
+    FAR_PLANE, etc.)
+
+    - - - - - - - - - - -
+
+    TEXTURE SIZE:
+    the shadow map will also let users set its texture dimensions.
+
+    - - - - - - - - - - -
+
+    showBounds(boolean)
+    this method will cast a shadow on everything outside the shadow maps range
+    making it easier to debug shading issues
+
+    - - - - - - - - - - -
+
+    PCF:
+    percentage closer filtering options to further smoothen shadow edges.
+
+    */
+    
     ShadowMap() {
         fbo = glGenFramebuffers();
         

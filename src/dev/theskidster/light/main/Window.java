@@ -18,8 +18,8 @@ public final class Window {
 
     private final int initialPosX;
     private final int initialPosY;
-    private int width  = 1280;
-    private int height = 720;
+    private int width;
+    private int height;
     
     private static float mousePosX;
     private static float mousePosY;
@@ -30,6 +30,9 @@ public final class Window {
     private boolean mouseRightHeld;
     
     Window(String title, Monitor monitor) {
+        width  = monitor.width; //1280
+        height = monitor.height; //720
+        
         try(MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer xStartBuf = stack.mallocInt(1);
             IntBuffer yStartBuf = stack.mallocInt(1);
@@ -47,7 +50,7 @@ public final class Window {
     }
     
     void show(Monitor monitor, Camera camera) {
-        glfwSetWindowMonitor(handle, NULL, initialPosX, initialPosY, width, height, monitor.refreshRate);
+        glfwSetWindowMonitor(handle, monitor.handle, initialPosX, initialPosY, width, height, monitor.refreshRate);
         glfwSetWindowPos(handle, initialPosX, initialPosY);
         glfwSwapInterval(1);
         glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
