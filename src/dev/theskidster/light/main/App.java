@@ -4,7 +4,6 @@ import dev.theskidster.light.graphics.Color;
 import dev.theskidster.light.scene.Scene;
 import dev.theskidster.light.scenes.TestScene;
 import dev.theskidster.jlogger.JLogger;
-import dev.theskidster.light.graphics.Texture;
 import dev.theskidster.shadercore.BufferType;
 import dev.theskidster.shadercore.GLProgram;
 import dev.theskidster.shadercore.Shader;
@@ -271,21 +270,6 @@ public final class App {
                 scene.render(sceneProgram, camera, shadowMap.textureHandle);
                 scene.renderLightSources(sceneProgram, camera);
             }
-            
-            //Render HUD.
-            {
-                hudProgram.use();
-                font.projMatrix.setOrtho(0, window.getWidth(), 0, window.getHeight(), 0, Integer.MAX_VALUE);
-                hudProgram.setUniform("uProjection", false, font.projMatrix);
-                
-                background.render(hudProgram);
-                font.drawString("FPS: " + fps, 12, window.getHeight() - 20, Color.WHITE, hudProgram);
-                font.drawString("DELTA: " + (float) deltaMetric, 12, window.getHeight() - 40, Color.WHITE, hudProgram);
-                font.drawString("TICKED: " + ticked, 12, window.getHeight() - 60, Color.WHITE, hudProgram);
-                font.drawString("VSYNC: " + vSync, 12, window.getHeight() - 80, Color.YELLOW, hudProgram);
-                font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
-                font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
-            }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             blurProgram.use();
@@ -307,6 +291,21 @@ public final class App {
                 if(firstPass) firstPass = false;
             }
             
+            glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+            //Render HUD.
+            {
+                hudProgram.use();
+                font.projMatrix.setOrtho(0, window.getWidth(), 0, window.getHeight(), 0, Integer.MAX_VALUE);
+                hudProgram.setUniform("uProjection", false, font.projMatrix);
+                
+                background.render(hudProgram);
+                font.drawString("FPS: " + fps, 12, window.getHeight() - 20, Color.WHITE, hudProgram);
+                font.drawString("DELTA: " + (float) deltaMetric, 12, window.getHeight() - 40, Color.WHITE, hudProgram);
+                font.drawString("TICKED: " + ticked, 12, window.getHeight() - 60, Color.WHITE, hudProgram);
+                font.drawString("VSYNC: " + vSync, 12, window.getHeight() - 80, Color.YELLOW, hudProgram);
+                font.drawString("MONITOR: " + monitor.info, 12, window.getHeight() - 100, Color.YELLOW, hudProgram);
+                font.drawString("MEM FREE: " + Runtime.getRuntime().freeMemory(), 12, window.getHeight() - 120, Color.CYAN, hudProgram);
+            }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             sceneProgram.use();
